@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Noel's Life - Daily Life & Learning Log</title>
+    <title>LaTeX Article Notes Studio - Office Ribbon Edition</title>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -12,1116 +13,1137 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            500: '#0284c7',
-                            600: '#0369a1',
-                            700: '#075985',
-                            900: '#0c4a6e',
-                        }
+                        'overleaf-green': '#10b981',
+                        'overleaf-green-dark': '#047857',
+                        'overleaf-header': '#0f172a',
+                        'overleaf-editor': '#111827',
+                        'overleaf-editor-gutter': '#0b0f19',
+                        'pdf-bg': '#334155',
+                    },
+                    fontFamily: {
+                        serif: ['"Computer Modern"', '"Latin Modern Math"', 'Georgia', 'serif'],
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['"Fira Code"', 'Consolas', 'Courier New', 'monospace'],
                     }
                 }
             }
         }
     </script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- KaTeX CSS and JS -->
+
+    <!-- KaTeX for math rendering -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
-    <!-- MarkedJS for Markdown Rendering -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <style>
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.4); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(156, 163, 175, 0.6); }
 
-        .markdown-preview h1 { font-size: 1.75rem; font-weight: 700; margin-top: 1rem; margin-bottom: 0.5rem; border-bottom: 1px solid currentColor; padding-bottom: 0.25rem; }
-        .markdown-preview h2 { font-size: 1.35rem; font-weight: 600; margin-top: 0.85rem; margin-bottom: 0.4rem; }
-        .markdown-preview h3 { font-size: 1.15rem; font-weight: 600; margin-top: 0.75rem; margin-bottom: 0.3rem; }
-        .markdown-preview p { margin-bottom: 0.75rem; line-height: 1.6; }
-        .markdown-preview ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 0.75rem; }
-        .markdown-preview ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 0.75rem; }
-        .markdown-preview blockquote { border-left: 4px solid #0284c7; padding-left: 1rem; margin-left: 0; margin-bottom: 0.75rem; opacity: 0.9; font-style: italic; }
-        .markdown-preview code { background-color: rgba(156, 163, 175, 0.2); padding: 0.15rem 0.3rem; border-radius: 0.25rem; font-family: monospace; font-size: 0.9em; }
-        .markdown-preview pre code { display: block; padding: 0.75rem; overflow-x: auto; background-color: rgba(0, 0, 0, 0.1); border-radius: 0.375rem; }
-        .dark .markdown-preview pre code { background-color: rgba(0, 0, 0, 0.4); }
-        .katex-display { margin: 1em 0; overflow-x: auto; overflow-y: hidden; padding: 0.2rem 0; }
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Smooth Scrollbars */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.2); border-radius: 6px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.4); }
+
+        /* Document Preview A4 Academic PDF Canvas */
+        .pdf-a4-page {
+            background: #ffffff;
+            color: #0f172a;
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.4), 0 10px 15px -5px rgba(0, 0, 0, 0.2);
+            width: 210mm;
+            min-height: 297mm;
+            padding: 28mm 24mm;
+            margin: 2rem auto;
+            position: relative;
+            transition: transform 0.15s ease-out;
+            transform-origin: top center;
+            box-sizing: border-box;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .dark .pdf-a4-page {
+            background: #ffffff;
+            color: #0f172a;
+        }
+
+        /* Environments Styling — minimalistic: thin accent line, no fill */
+        .latex-env {
+            border-left: 2px solid;
+            padding: 0.45rem 1rem 0.5rem;
+            margin: 1.1rem 0;
+            border-radius: 0;
+            background-color: transparent;
+        }
+        .latex-theorem    { border-color: #2563eb; }
+        .latex-definition { border-color: #059669; }
+        .latex-lemma      { border-color: #0284c7; }
+        .latex-proof      { border-color: #7c3aed; }
+        .latex-note       { border-color: #d97706; }
+        .latex-example    { border-color: #94a3b8; }
+
+        /* Minimalistic label: small, semibold, sentence case */
+        .latex-env-label {
+            display: block;
+            font-family: Inter, system-ui, sans-serif;
+            font-weight: 600;
+            font-size: 0.72rem;
+            line-height: 1.25;
+            letter-spacing: 0;
+            margin-bottom: 0.15rem;
+        }
+        .latex-env-label .opt-title {
+            font-weight: 400;
+            color: #64748b;
+            margin-left: 0.2rem;
+        }
+        .latex-env-body { line-height: 1.6; }
+        .latex-proof .latex-env-body { font-style: italic; }
+
+        /* Gutter Divider Drag */
+        .gutter-divider {
+            cursor: col-resize;
+            transition: background-color 0.2s;
+        }
+        .gutter-divider:hover, .gutter-divider.dragging {
+            background-color: #10b981 !important;
+        }
+
+        /* Office Ribbon Tab styling */
+        .ribbon-tab-btn {
+            position: relative;
+            padding: 0.5rem 0.85rem;
+            font-weight: 500;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            transition: all 0.15s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .ribbon-tab-btn:hover {
+            color: #f1f5f9;
+        }
+        .ribbon-tab-btn.active {
+            color: #10b981;
+            border-bottom-color: #10b981;
+            background-color: rgba(15, 23, 42, 0.6);
+        }
+
+        /* Ribbon Tool Item */
+        .ribbon-tool-btn {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.4rem 0.6rem;
+            border-radius: 0.375rem;
+            background-color: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(51, 65, 85, 0.6);
+            color: #e2e8f0;
+            transition: all 0.15s ease;
+            min-width: 3.25rem;
+            height: 3rem;
+        }
+        .ribbon-tool-btn:hover {
+            background-color: #334155;
+            border-color: #10b981;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        /* Print Media Styles for Downloading strictly as A4 PDF */
+        @media print {
+            @page {
+                size: A4;
+                margin: 20mm;
+            }
+            body * { visibility: hidden !important; }
+            #preview-pane, #preview-pane *, #preview-canvas, #preview-canvas * {
+                visibility: visible !important;
+            }
+            #preview-pane {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                padding: 0 !important;
+                background: white !important;
+                overflow: visible !important;
+            }
+            .pdf-a4-page {
+                box-shadow: none !important;
+                margin: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+                transform: scale(1) !important;
+            }
+            .no-print { display: none !important; }
+        }
     </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 h-full flex flex-col font-sans transition-colors duration-200">
+<body class="h-full bg-slate-950 text-slate-100 flex flex-col font-sans overflow-hidden antialiased select-none dark">
 
-    <!-- Top Navigation Header -->
-    <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-4 py-3 flex items-center justify-between shrink-0 shadow-sm z-10">
-        <div class="flex items-center space-x-3">
-            <button id="toggle-sidebar" class="md:hidden text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 p-2 rounded-lg">
-                <i class="fa-solid fa-bars text-lg"></i>
-            </button>
-            <div class="flex items-center space-x-2">
-                <span class="bg-brand-500 text-white p-2 rounded-lg text-lg flex items-center justify-center w-9 h-9">
-                    <i class="fa-solid fa-book-open text-base"></i>
-                </span>
-                <h1 class="text-xl font-bold bg-gradient-to-r from-brand-600 to-indigo-600 bg-clip-text text-transparent">
-                    Noel's Life
-                </h1>
+    <!-- SPACIOUS MINIMALIST TOP HEADER -->
+    <header class="no-print h-16 bg-overleaf-header border-b border-slate-800/80 px-6 flex items-center justify-between shrink-0 z-30">
+
+        <!-- Left: Document Brand & Title -->
+        <div class="flex items-center space-x-4">
+            <div class="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center font-bold text-white text-xs shadow-md tracking-tight">
+                TeX
             </div>
-            
-            <!-- Auth Status Indicator -->
-            <span id="badge-auth-status" class="text-xs px-2.5 py-1 rounded-full font-medium flex items-center space-x-1 bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300">
-                <i class="fa-solid fa-eye text-[10px]"></i>
-                <span>Visitor Mode (Read-Only)</span>
-            </span>
-            <!-- Security Badge Notice -->
-            <span class="hidden lg:flex text-[11px] bg-slate-100 dark:bg-slate-700/60 text-slate-600 dark:text-slate-300 px-2.5 py-1 rounded-md border border-slate-200 dark:border-slate-600 items-center space-x-1">
-                <i class="fa-solid fa-shield-halved text-emerald-500"></i>
-                <span>Public: Read-Only | Owner: <strong class="text-slate-800 dark:text-slate-100 font-medium">imanuelrava790@gmail.com</strong></span>
+            <div class="flex flex-col">
+                <span class="text-sm font-semibold text-slate-100 tracking-wide flex items-center gap-2">
+                    <span id="project-name-display">Article_Notes.tex</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 text-slate-400 border border-slate-700/60">Office Ribbon Suite</span>
+                </span>
+            </div>
+        </div>
+
+        <!-- Center: Recompile & Compile Settings -->
+        <div class="flex items-center space-x-3">
+            <div class="inline-flex rounded-lg shadow-sm overflow-hidden border border-emerald-600/50">
+                <button id="recompile-btn" class="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs transition-colors">
+                    <i data-lucide="refresh-cw" id="recompile-icon" class="w-3.5 h-3.5"></i>
+                    Recompile
+                </button>
+                <div class="bg-emerald-950/80 px-3 py-2 border-l border-emerald-700/60 flex items-center">
+                    <label class="flex items-center gap-1.5 cursor-pointer text-xs text-emerald-200 font-medium">
+                        <input type="checkbox" id="auto-compile-toggle" checked class="w-3.5 h-3.5 text-emerald-500 rounded bg-slate-900 border-slate-700 focus:ring-0">
+                        Auto
+                    </label>
+                </div>
+            </div>
+            <span id="compile-time-badge" class="text-xs text-slate-400 font-mono px-3 py-1.5 bg-slate-900/90 rounded-md border border-slate-800">
+                0ms
             </span>
         </div>
 
-        <div class="flex items-center space-x-2 sm:space-x-3">
-            <!-- Firebase Config Button -->
-            <button id="btn-open-config" class="flex items-center space-x-1 text-xs bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-2.5 py-1.5 rounded-lg transition-colors" title="Configure Firebase Credentials">
-                <i class="fa-solid fa-gear text-slate-500"></i>
-                <span class="hidden md:inline font-medium">Firebase Setup</span>
+        <!-- Right: Actions, Zoom, Export -->
+        <div class="flex items-center space-x-2.5">
+            <!-- Copy Raw LaTeX Source Button -->
+            <button id="copy-tex-btn" title="Copy Raw LaTeX Code" class="flex items-center gap-2 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700/80 rounded-md text-xs transition-colors">
+                <i data-lucide="copy" class="w-3.5 h-3.5 text-slate-400"></i>
+                Copy Code
             </button>
 
-            <!-- Activity Tracker Button -->
-            <button id="btn-open-tracker" class="flex items-center space-x-1 text-sm bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-3 py-1.5 rounded-lg transition-colors">
-                <i class="fa-solid fa-calendar-check text-brand-500"></i>
-                <span class="hidden sm:inline font-medium">Activity Tracker</span>
+            <!-- Download TeX -->
+            <button id="download-tex-btn" title="Download Source (.tex)" class="flex items-center gap-2 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700/80 rounded-md text-xs transition-colors">
+                <i data-lucide="code" class="w-3.5 h-3.5 text-indigo-400"></i>
+                .tex
             </button>
 
-            <!-- Export / Backup Dropdown -->
-            <div class="relative inline-block text-left" id="container-data-sync">
-                <button id="btn-data-menu" class="flex items-center space-x-1 text-sm bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-3 py-1.5 rounded-lg transition-colors">
-                    <i class="fa-solid fa-file-import text-indigo-500"></i>
-                    <span class="hidden sm:inline font-medium">Export</span>
-                    <i class="fa-solid fa-chevron-down text-xs ml-1"></i>
-                </button>
-                <div id="data-dropdown" class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-slate-800 ring-1 ring-black ring-opacity-5 z-20 py-1 border border-slate-200 dark:border-slate-700">
-                    <button id="btn-export-json" class="w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center space-x-2">
-                        <i class="fa-solid fa-download w-4"></i>
-                        <span>Export Backup (JSON)</span>
-                    </button>
-                    <button id="btn-export-md" class="w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center space-x-2">
-                        <i class="fa-brands fa-markdown w-4"></i>
-                        <span>Export Note (.md)</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Auth Login / Logout Button -->
-            <button id="btn-auth-toggle" class="text-sm bg-brand-500 hover:bg-brand-600 text-white font-medium px-3 py-1.5 rounded-lg flex items-center space-x-1.5 transition-colors shadow-sm">
-                <i class="fa-solid fa-right-to-bracket" id="icon-auth-btn"></i>
-                <span id="text-auth-btn">Noel Login</span>
+            <!-- Download PDF / Print -->
+            <button id="download-pdf-btn" title="Print or Save as PDF" class="flex items-center gap-2 px-3.5 py-1.5 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 rounded-md text-xs font-medium transition-colors">
+                <i data-lucide="file-text" class="w-3.5 h-3.5 text-emerald-400"></i>
+                Export PDF
             </button>
 
-            <!-- Theme Toggle -->
-            <button id="btn-theme-toggle" class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" title="Toggle Theme">
-                <i class="fa-solid fa-moon text-lg dark:hidden"></i>
-                <i class="fa-solid fa-sun text-lg hidden dark:block"></i>
+            <div class="h-5 w-px bg-slate-800 mx-1"></div>
+
+            <!-- Find Shortcut Trigger -->
+            <button id="open-find-btn" title="Find & Replace (Ctrl+F)" class="p-2 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/80 transition-colors">
+                <i data-lucide="search" class="w-4 h-4"></i>
+            </button>
+
+            <!-- Theme Switcher Button -->
+            <button id="toggle-theme-btn" title="Toggle Theme (Dark/Light)" class="p-2 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/80 transition-colors">
+                <i data-lucide="moon" class="w-4 h-4"></i>
             </button>
         </div>
     </header>
 
-    <!-- Main Workspace Container -->
-    <div class="flex flex-1 overflow-hidden relative">
+    <!-- OFFICE WORD-STYLE EQUATION & FORMATTING RIBBON BAR -->
+    <section class="no-print bg-slate-900 border-b border-slate-800 flex flex-col shrink-0 shadow-md">
 
-        <!-- Sidebar Navigation -->
-        <aside id="sidebar" class="fixed md:static inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out w-72 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col z-20 shadow-lg md:shadow-none">
-            
-            <div class="p-3 border-b border-slate-200 dark:border-slate-700 flex flex-col space-y-2">
-                <!-- Create Button (Owner Only) -->
-                <button id="btn-new-note" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center space-x-2 shadow-sm transition-all hover:shadow hidden">
-                    <i class="fa-solid fa-plus"></i>
-                    <span>New Entry</span>
-                </button>
-                
-                <!-- Search Input -->
-                <div class="relative">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
-                    <input type="text" id="input-search" placeholder="Search Noel's notes or math..." class="w-full pl-8 pr-3 py-1.5 text-sm bg-slate-100 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100">
-                </div>
-            </div>
+        <!-- Ribbon Category Navigation Tabs (Reordered with Environments & Blocks first) -->
+        <div class="flex items-center px-4 bg-slate-950/80 border-b border-slate-800/80 overflow-x-auto text-xs">
+            <button class="ribbon-tab-btn active" data-target="tab-environments">Environments & Blocks</button>
+            <button class="ribbon-tab-btn" data-target="tab-formatting">Text & Formatting</button>
+            <button class="ribbon-tab-btn" data-target="tab-fractions">Fractions, Powers & Matrices</button>
+            <button class="ribbon-tab-btn" data-target="tab-calculus">Calculus & Structures</button>
+            <button class="ribbon-tab-btn" data-target="tab-symbols">Symbols & Greek</button>
+        </div>
 
-            <!-- Categories Tag Filter -->
-            <div class="px-3 py-2 border-b border-slate-200 dark:border-slate-700 overflow-x-auto flex space-x-1 text-xs shrink-0 no-scrollbar" id="tag-filter-container">
-            </div>
+        <!-- Ribbon Toolbar Content Area -->
+        <div class="p-2.5 px-4 overflow-x-auto min-h-[4.25rem] flex items-center">
 
-            <!-- Entries List -->
-            <div class="flex-1 overflow-y-auto p-2 space-y-1" id="notes-list">
-            </div>
-
-            <!-- Sidebar Footer -->
-            <div class="p-3 border-t border-slate-200 dark:border-slate-700 text-xs text-slate-500 dark:text-slate-400 flex justify-between items-center bg-slate-50 dark:bg-slate-800/50">
-                <span id="note-count-display">0 entries</span>
-                <span id="streak-counter-badge" class="bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-full font-medium">🔥 0 Days Streak</span>
-            </div>
-        </aside>
-
-        <!-- Sidebar Overlay on Mobile -->
-        <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/50 z-10 hidden md:hidden"></div>
-
-        <!-- Main Workspace -->
-        <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 dark:bg-slate-900">
-
-            <!-- Active Note Controls -->
-            <div class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-4 py-2 flex flex-wrap items-center justify-between gap-2 shrink-0">
-                
-                <div class="flex items-center space-x-2 flex-1 min-w-[200px]">
-                    <select id="edit-category" disabled class="text-xs bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded px-2 py-1 font-medium text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 disabled:opacity-80">
-                        <option value="Learning Notes">Learning Notes</option>
-                        <option value="Daily Life">Daily Life</option>
-                        <option value="Research">Research</option>
-                        <option value="Study Logs">Study Logs</option>
-                        <option value="Math & Physics">Math & Physics</option>
-                    </select>
-                    <input type="date" id="edit-date" readonly class="text-xs bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded px-2 py-1 font-medium text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500">
-                </div>
-
-                <!-- Editor Mode Controls -->
-                <div class="flex items-center space-x-1 sm:space-x-2">
-                    <div id="view-mode-container" class="bg-slate-100 dark:bg-slate-700 p-0.5 rounded-lg flex items-center text-xs">
-                        <button id="view-mode-split" class="px-2.5 py-1 rounded-md font-medium transition-colors text-slate-600 dark:text-slate-300 hover:text-slate-900" title="Split Screen">
-                            <i class="fa-solid fa-columns"></i> <span class="hidden sm:inline ml-1">Split</span>
-                        </button>
-                        <button id="view-mode-edit" class="px-2.5 py-1 rounded-md font-medium transition-colors text-slate-600 dark:text-slate-300 hover:text-slate-900" title="Editor Only">
-                            <i class="fa-solid fa-pen-to-square"></i> <span class="hidden sm:inline ml-1">Edit</span>
-                        </button>
-                        <button id="view-mode-preview" class="px-2.5 py-1 rounded-md font-medium transition-colors bg-white dark:bg-slate-600 shadow-sm text-slate-800 dark:text-slate-100" title="Preview Only">
-                            <i class="fa-solid fa-eye"></i> <span class="hidden sm:inline ml-1">Preview</span>
-                        </button>
-                    </div>
-
-                    <button id="btn-copy-github" class="text-xs bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 px-2.5 py-1.5 rounded-lg font-medium flex items-center space-x-1 transition-colors" title="Copy formatted Markdown for GitHub Commit">
-                        <i class="fa-brands fa-github"></i>
-                        <span class="hidden md:inline">Copy Markdown</span>
-                    </button>
-
-                    <button id="btn-delete-note" class="text-xs bg-rose-50 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800 hover:bg-rose-100 dark:hover:bg-rose-900/50 px-2.5 py-1.5 rounded-lg font-medium transition-colors hidden" title="Delete Entry">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Active Note Title -->
-            <div class="px-4 py-2 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
-                <input type="text" id="edit-title" readonly placeholder="Entry Title..." class="w-full text-lg sm:text-xl font-bold bg-transparent text-slate-900 dark:text-slate-50 focus:outline-none placeholder-slate-400">
-            </div>
-
-            <!-- Workspace Pane -->
-            <div class="flex-1 flex flex-col md:flex-row overflow-hidden relative" id="workspace-container">
-                
-                <!-- Left: Markdown & LaTeX Input -->
-                <div id="pane-editor" class="flex-1 flex flex-col h-full border-r border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 hidden">
-                    <div class="bg-slate-50 dark:bg-slate-800 px-3 py-1.5 text-xs text-slate-500 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
-                        <span class="font-medium"><i class="fa-brands fa-markdown mr-1"></i> Markdown & LaTeX Editor</span>
-                        <div class="space-x-1 text-slate-400">
-                            <span>Inline <code class="bg-slate-200 dark:bg-slate-700 px-1 rounded">$...$</code> & Block <code class="bg-slate-200 dark:bg-slate-700 px-1 rounded">$$...$$</code></span>
-                        </div>
-                    </div>
-                    <textarea id="editor-textarea" readonly class="flex-1 w-full p-4 font-mono text-sm bg-transparent border-none focus:outline-none resize-none text-slate-800 dark:text-slate-100 leading-relaxed" placeholder="Log content..."></textarea>
-                </div>
-
-                <!-- Right: Rendered Output Pane -->
-                <div id="pane-preview" class="flex-1 flex flex-col h-full bg-white dark:bg-slate-900 overflow-hidden">
-                    <div class="bg-slate-50 dark:bg-slate-800 px-3 py-1.5 text-xs text-slate-500 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
-                        <span class="font-medium"><i class="fa-solid fa-eye mr-1"></i> Live Formatted View</span>
-                        <span class="text-emerald-500 font-semibold flex items-center text-[10px]"><i class="fa-solid fa-bolt mr-1"></i> Live KaTeX</span>
-                    </div>
-                    <div id="preview-container" class="flex-1 p-6 overflow-y-auto markdown-preview text-slate-800 dark:text-slate-100">
+            <!-- Tab 1: Environments & Blocks (KATEX SAFE DISPLAY ENVIRONMENTS) -->
+            <div id="tab-environments" class="ribbon-tab-panel flex items-center space-x-2">
+                <div class="flex flex-col border-r border-slate-800 pr-3 mr-1">
+                    <span class="text-[10px] text-slate-500 font-sans uppercase font-semibold mb-1">Math Enclosures</span>
+                    <div class="flex items-center gap-1.5">
+                        <button data-snippet="\[&#10;  &#10;\]" data-offset="5" class="ribbon-tool-btn text-emerald-400 font-mono" title="Display Math Block"><span class="font-bold text-xs">\[ ... \]</span><span class="text-[9px] text-slate-400 mt-0.5">Display</span></button>
+                        <button data-snippet="\[&#10;\begin{aligned}&#10;  a &= b \\&#10;  &= c&#10;\end{aligned}&#10;\]" data-offset="23" class="ribbon-tool-btn border-emerald-500/40 text-emerald-400 font-mono" title="KaTeX Aligned System"><span class="font-mono text-xs font-bold">\aligned</span><span class="text-[9px] text-slate-400 mt-0.5">Aligned</span></button>
+                        <button data-snippet="\[&#10;\begin{cases}&#10;  a, & \text{if } x > 0 \\&#10;  b, & \text{otherwise}&#10;\end{cases}&#10;\]" data-offset="21" class="ribbon-tool-btn text-emerald-400 font-mono" title="Cases System"><span class="font-mono text-xs font-bold">\cases</span><span class="text-[9px] text-slate-400 mt-0.5">Cases</span></button>
+                        <button data-snippet="${x}$" data-offset="1" class="ribbon-tool-btn text-emerald-400 font-mono" title="Inline Math">$x$<span class="text-[9px] text-slate-400 mt-0.5">Inline</span></button>
                     </div>
                 </div>
 
+                <div class="flex flex-col border-r border-slate-800 pr-3 mr-1">
+                    <span class="text-[10px] text-slate-500 font-sans uppercase font-semibold mb-1">Academic Boxes</span>
+                    <div class="flex items-center gap-1.5">
+                        <button data-snippet="\begin{theorem}[Title]&#10;  &#10;\end{theorem}" data-offset="20" class="ribbon-tool-btn text-blue-400" title="Theorem Box"><span class="font-bold text-xs">Thm</span><span class="text-[9px] text-slate-400 mt-0.5">Theorem</span></button>
+                        <button data-snippet="\begin{lemma}[Lemma Title]&#10;  &#10;\end{lemma}" data-offset="24" class="ribbon-tool-btn text-sky-400" title="Lemma Box"><span class="font-bold text-xs">Lmm</span><span class="text-[9px] text-slate-400 mt-0.5">Lemma</span></button>
+                        <button data-snippet="\begin{definition}[Term]&#10;  &#10;\end{definition}" data-offset="22" class="ribbon-tool-btn text-emerald-400" title="Definition Box"><span class="font-bold text-xs">Def</span><span class="text-[9px] text-slate-400 mt-0.5">Definition</span></button>
+                        <button data-snippet="\begin{proof}&#10;  &#10;\end{proof}" data-offset="16" class="ribbon-tool-btn text-purple-400" title="Proof Environment"><span class="font-bold text-xs italic">Prf</span><span class="text-[9px] text-slate-400 mt-0.5">Proof</span></button>
+                        <button data-snippet="\begin{note}&#10;  &#10;\end{note}" data-offset="15" class="ribbon-tool-btn text-amber-400" title="Note Box"><span class="font-bold text-xs">Note</span><span class="text-[9px] text-slate-400 mt-0.5">Note</span></button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col">
+                    <span class="text-[10px] text-slate-500 font-sans uppercase font-semibold mb-1">Document Structure</span>
+                    <div class="flex items-center gap-1.5">
+                        <button data-snippet="\begin{abstract}&#10;  &#10;\end{abstract}" data-offset="19" class="ribbon-tool-btn" title="Abstract Block"><span class="font-bold text-xs">Abs</span><span class="text-[9px] text-slate-400 mt-0.5">Abstract</span></button>
+                        <button data-snippet="\section{Section Title}" data-offset="9" class="ribbon-tool-btn" title="New Section"><span class="font-bold text-xs">H1</span><span class="text-[9px] text-slate-400 mt-0.5">Section</span></button>
+                        <button data-snippet="\subsection{Sub Section}" data-offset="12" class="ribbon-tool-btn" title="New Sub Section"><span class="font-bold text-xs">H2</span><span class="text-[9px] text-slate-400 mt-0.5">SubSection</span></button>
+                    </div>
+                </div>
             </div>
-        </main>
+
+            <!-- Tab 2: Text & Formatting -->
+            <div id="tab-formatting" class="ribbon-tab-panel hidden flex items-center space-x-2">
+                <div class="flex flex-col border-r border-slate-800 pr-3 mr-1">
+                    <span class="text-[10px] text-slate-500 font-sans uppercase font-semibold mb-1">Text Styles</span>
+                    <div class="flex items-center gap-1.5">
+                        <button data-snippet="\textbf{text}" data-offset="8" class="ribbon-tool-btn" title="Bold Text"><i data-lucide="bold" class="w-4 h-4"></i><span class="text-[9px] text-slate-400 mt-0.5">Bold</span></button>
+                        <button data-snippet="\textit{text}" data-offset="8" class="ribbon-tool-btn" title="Italic Text"><i data-lucide="italic" class="w-4 h-4"></i><span class="text-[9px] text-slate-400 mt-0.5">Italic</span></button>
+                        <button data-snippet="\texttt{code}" data-offset="8" class="ribbon-tool-btn" title="Monospace Typewriter"><i data-lucide="code" class="w-4 h-4"></i><span class="text-[9px] text-slate-400 mt-0.5">Typewriter</span></button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col border-r border-slate-800 pr-3 mr-1">
+                    <span class="text-[10px] text-slate-500 font-sans uppercase font-semibold mb-1">Lists & Spacing</span>
+                    <div class="flex items-center gap-1.5">
+                        <button data-snippet="\begin{itemize}&#10;  \item &#10;\end{itemize}" data-offset="21" class="ribbon-tool-btn" title="Bullet List"><i data-lucide="list" class="w-4 h-4"></i><span class="text-[9px] text-slate-400 mt-0.5">Itemize</span></button>
+                        <button data-snippet="\begin{enumerate}&#10;  \item &#10;\end{enumerate}" data-offset="23" class="ribbon-tool-btn" title="Numbered List"><i data-lucide="list-ordered" class="w-4 h-4"></i><span class="text-[9px] text-slate-400 mt-0.5">Enumerate</span></button>
+                        <button data-snippet="\newpage" data-offset="8" class="ribbon-tool-btn text-amber-400" title="Insert Page Break"><i data-lucide="file-plus" class="w-4 h-4"></i><span class="text-[9px] text-slate-400 mt-0.5">Page Break</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Fractions, Powers & Matrices -->
+            <div id="tab-fractions" class="ribbon-tab-panel hidden flex items-center space-x-2">
+                <div class="flex flex-col border-r border-slate-800 pr-3 mr-1">
+                    <span class="text-[10px] text-slate-500 font-sans uppercase font-semibold mb-1">Division & Roots</span>
+                    <div class="flex items-center gap-1.5">
+                        <button data-snippet="\frac{a}{b}" data-offset="6" class="ribbon-tool-btn" title="Fraction"><span class="render-math">\frac{a}{b}</span><span class="text-[9px] text-slate-400 mt-0.5">Fraction</span></button>
+                        <button data-snippet="\sqrt{x}" data-offset="6" class="ribbon-tool-btn" title="Square Root"><span class="render-math">\sqrt{x}</span><span class="text-[9px] text-slate-400 mt-0.5">Sqrt</span></button>
+                        <button data-snippet="\sqrt[n]{x}" data-offset="6" class="ribbon-tool-btn" title="N-th Root"><span class="render-math">\sqrt[n]{x}</span><span class="text-[9px] text-slate-400 mt-0.5">N-Root</span></button>
+                        <button data-snippet="^{n}" data-offset="2" class="ribbon-tool-btn" title="Power / Superscript"><span class="render-math">x^n</span><span class="text-[9px] text-slate-400 mt-0.5">Power</span></button>
+                        <button data-snippet="_{i}" data-offset="2" class="ribbon-tool-btn" title="Subscript"><span class="render-math">x_i</span><span class="text-[9px] text-slate-400 mt-0.5">Subscript</span></button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col">
+                    <span class="text-[10px] text-slate-500 font-sans uppercase font-semibold mb-1">Vectors & Matrices</span>
+                    <div class="flex items-center gap-1.5">
+                        <button data-snippet="\vec{x}" data-offset="5" class="ribbon-tool-btn" title="Vector Accent"><span class="render-math">\vec{x}</span><span class="text-[9px] text-slate-400 mt-0.5">Vector</span></button>
+                        <button data-snippet="\bar{x}" data-offset="5" class="ribbon-tool-btn" title="Overline"><span class="render-math">\bar{x}</span><span class="text-[9px] text-slate-400 mt-0.5">Overline</span></button>
+                        <button data-snippet="\begin{bmatrix}&#10;a & b \\&#10;c & d&#10;\end{bmatrix}" data-offset="18" class="ribbon-tool-btn" title="Matrix 2x2"><span class="render-math">\begin{bmatrix}\cdot\end{bmatrix}</span><span class="text-[9px] text-slate-400 mt-0.5">Matrix</span></button>
+                        <button data-snippet="\[&#10;\begin{cases}&#10;a, & \text{if } x > 0 \\&#10;b, & \text{otherwise}&#10;\end{cases}&#10;\]" data-offset="21" class="ribbon-tool-btn" title="Cases Environment"><span class="render-math">\{</span><span class="text-[9px] text-slate-400 mt-0.5">Cases</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 4: Calculus & Structures -->
+            <div id="tab-calculus" class="ribbon-tab-panel hidden flex items-center space-x-2">
+                <div class="flex flex-col border-r border-slate-800 pr-3 mr-1">
+                    <span class="text-[10px] text-slate-500 font-sans uppercase font-semibold mb-1">Calculus</span>
+                    <div class="flex items-center gap-1.5">
+                        <button data-snippet="\int_{a}^{b} {x} \, dx" data-offset="12" class="ribbon-tool-btn" title="Definite Integral"><span class="render-math">\int_a^b</span><span class="text-[9px] text-slate-400 mt-0.5">Integral</span></button>
+                        <button data-snippet="\sum_{i=1}^{n} {a_i}" data-offset="14" class="ribbon-tool-btn" title="Summation"><span class="render-math">\sum_{i=1}^n</span><span class="text-[9px] text-slate-400 mt-0.5">Sum</span></button>
+                        <button data-snippet="\prod_{i=1}^{n} {a_i}" data-offset="15" class="ribbon-tool-btn" title="Product"><span class="render-math">\prod_{i=1}^n</span><span class="text-[9px] text-slate-400 mt-0.5">Product</span></button>
+                        <button data-snippet="\lim_{x \to 0} {f(x)}" data-offset="14" class="ribbon-tool-btn" title="Limit"><span class="render-math">\lim_{x \to 0}</span><span class="text-[9px] text-slate-400 mt-0.5">Limit</span></button>
+                        <button data-snippet="\frac{\partial {y}}{\partial {x}}" data-offset="16" class="ribbon-tool-btn" title="Partial Derivative"><span class="render-math">\frac{\partial y}{\partial x}</span><span class="text-[9px] text-slate-400 mt-0.5">Partial</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 5: Symbols & Greek -->
+            <div id="tab-symbols" class="ribbon-tab-panel hidden flex items-center space-x-2">
+                <div class="flex flex-col border-r border-slate-800 pr-3 mr-1">
+                    <span class="text-[10px] text-slate-500 font-sans uppercase font-semibold mb-1">Greek Letters</span>
+                    <div class="flex items-center gap-1.5">
+                        <button data-snippet="\alpha " data-offset="7" class="ribbon-tool-btn" title="Alpha"><span class="render-math">\alpha</span></button>
+                        <button data-snippet="\beta " data-offset="6" class="ribbon-tool-btn" title="Beta"><span class="render-math">\beta</span></button>
+                        <button data-snippet="\theta " data-offset="7" class="ribbon-tool-btn" title="Theta"><span class="render-math">\theta</span></button>
+                        <button data-snippet="\lambda " data-offset="8" class="ribbon-tool-btn" title="Lambda"><span class="render-math">\lambda</span></button>
+                        <button data-snippet="\pi " data-offset="4" class="ribbon-tool-btn" title="Pi"><span class="render-math">\pi</span></button>
+                        <button data-snippet="\omega " data-offset="7" class="ribbon-tool-btn" title="Omega"><span class="render-math">\omega</span></button>
+                        <button data-snippet="\Delta " data-offset="7" class="ribbon-tool-btn" title="Capital Delta"><span class="render-math">\Delta</span></button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col">
+                    <span class="text-[10px] text-slate-500 font-sans uppercase font-semibold mb-1">Math Sets & Logic</span>
+                    <div class="flex items-center gap-1.5">
+                        <button data-snippet="\mathbb{R}" data-offset="10" class="ribbon-tool-btn" title="Real Numbers Set"><span class="render-math">\mathbb{R}</span></button>
+                        <button data-snippet="\mathbb{C}" data-offset="10" class="ribbon-tool-btn" title="Complex Numbers Set"><span class="render-math">\mathbb{C}</span></button>
+                        <button data-snippet="\infty " data-offset="7" class="ribbon-tool-btn" title="Infinity"><span class="render-math">\infty</span></button>
+                        <button data-snippet="\in " data-offset="4" class="ribbon-tool-btn" title="Element of"><span class="render-math">\in</span></button>
+                        <button data-snippet="\forall " data-offset="8" class="ribbon-tool-btn" title="For All"><span class="render-math">\forall</span></button>
+                        <button data-snippet="\exists " data-offset="8" class="ribbon-tool-btn" title="There Exists"><span class="render-math">\exists</span></button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- MAIN WORKSPACE -->
+    <div id="workspace-container" class="flex-1 flex overflow-hidden relative">
+
+        <!-- 1. LEFT PANE: EDITOR PANE -->
+        <div id="editor-container" class="w-1/2 flex flex-col bg-overleaf-editor border-r border-slate-800/80 overflow-hidden relative">
+
+            <!-- EDITOR AREA WITH GUTTER & SPACIOUS TEXTAREA -->
+            <div class="flex-1 flex overflow-hidden relative font-mono text-xs sm:text-sm">
+                <!-- Line Numbers Gutter -->
+                <div id="editor-gutter" class="w-12 sm:w-14 py-4 bg-overleaf-editor-gutter text-slate-600 text-right pr-3 select-none font-mono text-xs border-r border-slate-800/80 leading-7 shrink-0">
+                    1
+                </div>
+
+                <!-- Textarea Code Input -->
+                <textarea id="latex-code-input" class="flex-1 bg-transparent text-slate-100 p-4 outline-none resize-none leading-7 font-mono border-none focus:ring-0 whitespace-pre overflow-y-auto selection:bg-slate-800" spellcheck="false" placeholder="Write LaTeX lecture notes code..."></textarea>
+            </div>
+
+            <!-- SPACIOUS STATUS BAR -->
+            <div class="no-print h-8 bg-slate-900 border-t border-slate-800/80 px-4 flex items-center justify-between text-xs text-slate-400 font-mono shrink-0">
+                <div class="flex items-center space-x-4">
+                    <span id="caret-pos-display">Ln 1, Col 1</span>
+                    <span class="text-slate-700">|</span>
+                    <span id="char-count-display">0 chars</span>
+                    <span class="text-slate-700">|</span>
+                    <span id="word-count-display">0 words</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-slate-500">UTF-8</span>
+                    <span class="text-slate-500">LaTeX Article</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESIZABLE SPLIT DIVIDER -->
+        <div id="splitter-divider" class="no-print w-1.5 bg-slate-800/80 hover:bg-emerald-500 transition-colors gutter-divider z-20 shrink-0"></div>
+
+        <!-- 2. RIGHT PANE: A4 PDF PAPER PREVIEW -->
+        <div id="preview-pane" class="w-1/2 bg-pdf-bg flex flex-col overflow-hidden relative">
+
+            <!-- PDF VIEWER CONTROL TOOLBAR -->
+            <div class="no-print h-10 bg-slate-900 border-b border-slate-800/80 px-6 flex items-center justify-between shrink-0 text-slate-300 text-xs">
+                <div class="flex items-center space-x-2">
+                    <span class="font-medium text-slate-300 flex items-center gap-2">
+                        <i data-lucide="file-check" class="w-4 h-4 text-emerald-400"></i> PDF Live Preview (A4 210 x 297 mm)
+                    </span>
+                </div>
+
+                <!-- Zoom Controls -->
+                <div class="flex items-center space-x-2">
+                    <button id="zoom-out-btn" class="p-1.5 hover:bg-slate-800 rounded text-slate-300 transition-colors" title="Zoom Out"><i data-lucide="zoom-out" class="w-3.5 h-3.5"></i></button>
+                    <span id="zoom-level-display" class="font-mono text-xs text-slate-400 w-12 text-center">100%</span>
+                    <button id="zoom-in-btn" class="p-1.5 hover:bg-slate-800 rounded text-slate-300 transition-colors" title="Zoom In"><i data-lucide="zoom-in" class="w-3.5 h-3.5"></i></button>
+                    <button id="zoom-fit-btn" class="p-1.5 hover:bg-slate-800 rounded text-slate-300 transition-colors ml-1" title="Reset Zoom"><i data-lucide="maximize-2" class="w-3.5 h-3.5"></i></button>
+                </div>
+            </div>
+
+            <!-- PDF SCROLLABLE CANVAS CONTAINER -->
+            <div id="preview-canvas" class="flex-1 overflow-y-auto p-6 sm:p-10 flex justify-center items-start">
+
+                <!-- Authentic Academic A4 Paper -->
+                <div id="pdf-paper" class="pdf-a4-page font-serif">
+                    <div id="rendered-document" class="prose max-w-none">
+                        <!-- Dynamic LaTeX Output -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 
-    <!-- Firebase Configuration Setup Modal -->
-    <div id="modal-config" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 w-full max-w-lg overflow-hidden flex flex-col">
-            <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800/80">
-                <div class="flex items-center space-x-2">
-                    <i class="fa-solid fa-sliders text-brand-500 text-lg"></i>
-                    <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">Firebase Setup</h3>
-                </div>
-                <button id="btn-close-config-modal" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg p-1">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+    <!-- FIND & REPLACE MODAL -->
+    <div id="find-modal" class="no-print hidden fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-50 flex items-start justify-center pt-24">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl shadow-2xl p-5 w-96 font-sans">
+            <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+                <span class="text-xs font-semibold text-slate-200 flex items-center gap-2">
+                    <i data-lucide="search" class="w-4 h-4 text-emerald-400"></i> Find & Replace
+                </span>
+                <button id="close-find-btn" class="text-slate-400 hover:text-slate-200"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
-            
-            <div class="p-6 space-y-4 text-xs sm:text-sm">
-                <p class="text-slate-600 dark:text-slate-300">
-                    To connect to cloud sync and Firebase Authentication, paste your Firebase Project Web SDK Configuration below:
-                </p>
-
-                <div class="space-y-2">
-                    <label class="block text-xs font-semibold uppercase text-slate-500">Firebase Config JSON / JS Object</label>
-                    <textarea id="input-firebase-config" rows="6" class="w-full p-2.5 font-mono text-xs bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100" placeholder='{
-  "apiKey": "AIzaSy...",
-  "authDomain": "your-app.firebaseapp.com",
-  "projectId": "your-app",
-  "storageBucket": "your-app.appspot.com",
-  "messagingSenderId": "123456789",
-  "appId": "1:123456789:web:abcdef"
-}'></textarea>
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="text-xs text-slate-400 mb-1 block">Find Text</label>
+                    <input type="text" id="find-input" class="w-full bg-slate-950 border border-slate-800 rounded-md px-3 py-2 text-slate-200 outline-none focus:border-emerald-500 font-mono">
                 </div>
-
-                <div class="p-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 rounded-lg text-amber-800 dark:text-amber-300 text-xs">
-                    <i class="fa-solid fa-circle-info mr-1"></i>
-                    <strong>No Firebase account yet?</strong> You can use <strong>Local Admin Mode</strong> to edit and write entries directly in your browser without any cloud setup!
+                <div>
+                    <label class="text-xs text-slate-400 mb-1 block">Replace With</label>
+                    <input type="text" id="replace-input" class="w-full bg-slate-950 border border-slate-800 rounded-md px-3 py-2 text-slate-200 outline-none focus:border-emerald-500 font-mono">
                 </div>
-
-                <div class="flex flex-col sm:flex-row gap-2 pt-2">
-                    <button id="btn-save-firebase-config" class="flex-1 py-2 bg-brand-500 hover:bg-brand-600 text-white font-medium rounded-lg text-xs transition-colors">
-                        Save Firebase Config
-                    </button>
-                    <button id="btn-enable-local-admin" class="py-2 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg text-xs transition-colors">
-                        Enable Local Admin Mode
-                    </button>
+                <div class="flex justify-end space-x-2 pt-2">
+                    <button id="exec-find-btn" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-md text-xs transition-colors">Find</button>
+                    <button id="exec-replace-btn" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-md text-xs font-medium transition-colors">Replace All</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Login / Auth Modal -->
-    <div id="modal-auth" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 w-full max-w-md overflow-hidden flex flex-col">
-            <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800/80">
-                <div class="flex items-center space-x-2">
-                    <i class="fa-solid fa-user-lock text-brand-500 text-lg"></i>
-                    <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">Noel's Secure Login</h3>
-                </div>
-                <button id="btn-close-auth-modal" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg p-1">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            
-            <form id="form-login" class="p-6 space-y-4">
-                <!-- Explicit Ownership & Security Notice -->
-                <div class="p-3 bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900 rounded-lg text-xs text-indigo-900 dark:text-indigo-200 flex items-start space-x-2">
-                    <i class="fa-solid fa-shield-halved text-indigo-500 text-sm mt-0.5 shrink-0"></i>
-                    <div>
-                        <strong class="font-semibold block">Access Notice</strong>
-                        Public Access: Read-Only. ONLY <strong>imanuelrava790@gmail.com</strong> is authorized to log in as the owner/editor.
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Email</label>
-                    <input type="email" id="auth-email" required placeholder="imanuelrava790@gmail.com" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Password</label>
-                    <input type="password" id="auth-password" required placeholder="••••••••" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100">
-                </div>
-
-                <div id="auth-error" class="hidden text-xs text-rose-600 dark:text-rose-400 font-medium bg-rose-50 dark:bg-rose-950/40 p-2.5 rounded-lg border border-rose-200 dark:border-rose-900">
-                </div>
-
-                <button type="submit" id="btn-submit-auth" class="w-full py-2.5 bg-brand-500 hover:bg-brand-600 text-white font-medium text-sm rounded-lg shadow transition-colors flex justify-center items-center">
-                    <span>Log In as Owner</span>
-                </button>
-
-                <div class="text-center pt-2">
-                    <button type="button" id="btn-switch-local-mode" class="text-xs text-brand-600 dark:text-brand-400 hover:underline">
-                        Or click here to use Local Offline Admin Mode
-                    </button>
-                </div>
-            </form>
-        </div>
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast-banner" class="no-print fixed bottom-6 right-6 bg-slate-900 text-slate-200 border border-slate-800 text-xs px-4 py-3 rounded-lg shadow-2xl opacity-0 translate-y-2 pointer-events-none transition-all duration-200 z-50 flex items-center gap-2.5">
+        <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+        <span id="toast-msg">Action completed</span>
     </div>
 
-    <!-- Activity Tracker Modal -->
-    <div id="modal-tracker" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
-            <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800/80">
-                <div class="flex items-center space-x-2">
-                    <i class="fa-solid fa-fire text-amber-500 text-lg"></i>
-                    <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">Noel's Learning Activity Heatmap</h3>
-                </div>
-                <button id="btn-close-modal" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg p-1">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            
-            <div class="p-6 overflow-y-auto space-y-6">
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-                    <div class="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 p-4 rounded-xl">
-                        <div class="text-xs font-medium text-amber-600 dark:text-amber-400 uppercase tracking-wider">Current Streak</div>
-                        <div class="text-3xl font-extrabold text-amber-600 dark:text-amber-400 mt-1" id="modal-streak-count">0 Days</div>
-                    </div>
-                    <div class="bg-brand-50 dark:bg-brand-950/30 border border-brand-200 dark:border-brand-800 p-4 rounded-xl">
-                        <div class="text-xs font-medium text-brand-600 dark:text-brand-400 uppercase tracking-wider">Total Notes</div>
-                        <div class="text-3xl font-extrabold text-brand-600 dark:text-brand-400 mt-1" id="modal-total-count">0</div>
-                    </div>
-                    <div class="bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800 p-4 rounded-xl">
-                        <div class="text-xs font-medium text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Active Days (Month)</div>
-                        <div class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 mt-1" id="modal-active-days">0</div>
-                    </div>
-                </div>
+    <!-- SCRIPT APPLICATION LOGIC -->
+    <script>
+        // STRICT DEFAULT ARTICLE TEMPLATE WITH KATEX-NATIVE MATH
+        const DEFAULT_ARTICLE_TEMPLATE = `\\documentclass[a4paper,11pt]{article}
 
-                <div>
-                    <h4 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Activity Calendar (Last 28 Days)</h4>
-                    <div class="grid grid-cols-7 gap-1.5 sm:gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700" id="heatmap-grid">
-                    </div>
-                </div>
-            </div>
-            
-            <div class="px-5 py-3 bg-slate-50 dark:bg-slate-800/80 border-t border-slate-200 dark:border-slate-700 text-right">
-                <button id="btn-close-modal-bottom" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 text-sm font-medium rounded-lg transition-colors">
-                    Close
-                </button>
-            </div>
-        </div>
-    </div>
+\\title{Lecture Notes: Foundations of Mathematical Physics}
+\\author{Dr. Alexander Vance \\quad|\\quad Department of Applied Mathematics}
+\\date{\\today}
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-5 right-5 bg-slate-800 text-white px-4 py-2.5 rounded-lg shadow-xl text-sm flex items-center space-x-2 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
-        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400"></i>
-        <span id="toast-message">Notification</span>
-    </div>
+\\begin{document}
 
-    <!-- Application Module Logic -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithCustomToken, signInAnonymously, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+\\maketitle
 
-        const OWNER_EMAIL = "imanuelrava790@gmail.com";
+\\begin{abstract}
+This document outlines the foundational concepts of vector spaces, linear operators, and spectral decomposition in Hilbert space. We establish key definitions and present formal proofs relevant to theoretical physics notes.
+\\end{abstract}
 
-        const DEFAULT_NOTES = [
-            {
-                id: 'note-1',
-                title: 'Quantum Mechanics & Schrödinger Equation',
-                category: 'Math & Physics',
-                date: new Date().toISOString().split('T')[0],
-                content: `# Quantum Physics Daily Log\n\nToday I reviewed the fundamental time-dependent Schrödinger Equation:\n\n$$i\\hbar \\frac{\\partial}{\\partial t}\\Psi(\\mathbf{r},t) = \\hat{H}\\Psi(\\mathbf{r},t)$$\n\nWhere the Hamiltonian operator $\\hat{H}$ is defined as:\n\n$$\\hat{H} = -\\frac{\\hbar^2}{2m}\\nabla^2 + V(\\mathbf{r},t)$$\n\n### Key Concepts\n- **Wave Function $\\Psi$**: Probabilistic description of quantum state.\n- **Planck Constant**: $\\hbar = \\frac{h}{2\\pi} \\approx 1.054 \\times 10^{-34} \\text{ J}\\cdot\\text{s}$.`
-            },
-            {
-                id: 'note-2',
-                title: 'Machine Learning: Loss Functions & Gradient Descent',
-                category: 'Learning Notes',
-                date: new Date(Date.now() - 86400000).toISOString().split('T')[0],
-                content: `# Neural Network Optimization\n\nLog on mean squared error loss function for linear models:\n\n$$\\mathcal{L}(\\theta) = \\frac{1}{2m} \\sum_{i=1}^{m} \\left( h_\\theta(x^{(i)}) - y^{(i)} \\right)^2$$\n\n### Parameter Update Rule:\n$$\\theta_j := \\theta_j - \\alpha \\frac{\\partial}{\\partial \\theta_j} \\mathcal{L}(\\theta)$$`
+\\section{1. Vector Spaces \\& Operators}
+
+Let $\\mathcal{V}$ be a finite-dimensional vector space over the complex field $\\mathbb{C}$.
+
+\\begin{definition}[Linear Operator]
+A mapping $T: \\mathcal{V} \\to \\mathcal{V}$ is called a linear operator if for all vectors $u, v \\in \\mathcal{V}$ and scalars $\\alpha, \\beta \\in \\mathbb{C}$:
+\\[
+T(\\alpha u + \\beta v) = \\alpha T(u) + \\beta T(v)
+\\]
+\\end{definition}
+
+Consider a matrix representation of operator $A$ acting on $\\mathbb{C}^2$:
+\\[
+A = \\begin{bmatrix}
+a & b \\\\
+c & d
+\\end{bmatrix}
+\\]
+
+\\subsection{1.1 Eigenvalues and Aligned System}
+
+The eigenvalues $\\lambda$ of operator $A$ are solutions to the characteristic equation:
+\\[
+\\begin{aligned}
+\\det(A - \\lambda I) &= 0 \\\\
+(a - \\lambda)(d - \\lambda) - bc &= 0
+\\end{aligned}
+\\]
+
+\\begin{theorem}[Spectral Theorem for Hermitian Operators]
+Every Hermitian operator $H = H^\\dagger$ defined on an inner product space possesses a complete orthonormal basis of eigenvectors with real eigenvalues.
+\\end{theorem}
+
+\\begin{proof}
+Let $\\lambda_1, \\lambda_2$ be distinct eigenvalues with corresponding eigenvectors $|v_1\\rangle$ and $|v_2\\rangle$. Then:
+\\[
+\\langle v_1 | H | v_2 \\rangle = \\lambda_2 \\langle v_1 | v_2 \\rangle
+\\]
+Since $H$ is Hermitian, we also have $\\langle v_1 | H | v_2 \\rangle = \\lambda_1^* \\langle v_1 | v_2 \\rangle$. Thus $(\\lambda_1 - \\lambda_2) \\langle v_1 | v_2 \\rangle = 0$, proving orthogonality.
+\\end{proof}
+
+\\section{2. Differential Equations \\& Series Integrals}
+
+The general piecewise solution for a linear system is given by:
+\\[
+f(x) = \\begin{cases}
+\\frac{d^2 y}{dx^2} + \\omega^2 y(x), & \\text{if } x \\ge 0 \\\\
+0, & \\text{otherwise}
+\\end{cases}
+\\]
+
+The corresponding boundary integral takes the standard Gaussian form:
+\\[
+I = \\int_{0}^{\\infty} e^{-\\alpha x^2} \\, dx = \\frac{1}{2} \\sqrt{\\frac{\\pi}{\\alpha}}
+\\]
+
+\\begin{note}
+This integral represents the classical Gaussian distribution normalization in probability theory.
+\\end{note}
+
+\\end{document}`;
+
+        // State & DOM Elements
+        const editor = document.getElementById('latex-code-input');
+        const gutter = document.getElementById('editor-gutter');
+        const renderedDoc = document.getElementById('rendered-document');
+        const pdfPaper = document.getElementById('pdf-paper');
+        const recompileBtn = document.getElementById('recompile-btn');
+        const autoCompileToggle = document.getElementById('auto-compile-toggle');
+        const compileBadge = document.getElementById('compile-time-badge');
+        const caretPosDisplay = document.getElementById('caret-pos-display');
+        const charCountDisplay = document.getElementById('char-count-display');
+        const wordCountDisplay = document.getElementById('word-count-display');
+        const toastBanner = document.getElementById('toast-banner');
+        const toastMsg = document.getElementById('toast-msg');
+
+        let zoomLevel = 1.0;
+
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Render Ribbon Button Math Previews
+        function renderRibbonPreviews() {
+            document.querySelectorAll('.render-math').forEach(span => {
+                const mathStr = span.innerText;
+                try {
+                    katex.render(mathStr, span, { throwOnError: false, displayMode: false });
+                } catch(e) {}
+            });
+        }
+
+        // Office Ribbon Navigation Logic
+        const tabBtns = document.querySelectorAll('.ribbon-tab-btn');
+        const tabPanels = document.querySelectorAll('.ribbon-tab-panel');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabPanels.forEach(p => p.classList.add('hidden'));
+
+                btn.classList.add('active');
+                const targetId = btn.getAttribute('data-target');
+                document.getElementById(targetId).classList.remove('hidden');
+            });
+        });
+
+        /* =====================================================================
+           GENERAL-PURPOSE LATEX PARSING UTILITIES  (applicable to ALL peers)
+           ---------------------------------------------------------------------
+           The original code hard-coded a separate regex for every command
+           (\textbf, \textit, \section, \title, \author, \date, ...). Each used
+           the pattern  \cmd{([^}]+)}  which BREAKS on nested braces such as
+           \section{\textbf{Bold} Title} or \title{A {nested} title}.
+
+           The utilities below are generic. Adding support for a new "peer"
+           command or environment only requires appending ONE row to the
+           TEXT_COMMANDS / ENV_MAP registries further down — no new regex.
+           ===================================================================== */
+
+        /**
+         * Extract the content between balanced { ... } starting at openIndex.
+         * Handles nested braces and escaped \{ \} characters.
+         * Returns { content, end } or null when unbalanced.
+         */
+        function extractBalancedBraces(str, openIndex) {
+            if (str[openIndex] !== '{') return null;
+            let depth = 0;
+            for (let i = openIndex; i < str.length; i++) {
+                const ch = str[i];
+                if (ch === '\\' && i + 1 < str.length) { i++; continue; } // skip \{ \} \%
+                if (ch === '{') depth++;
+                else if (ch === '}') {
+                    depth--;
+                    if (depth === 0) return { content: str.substring(openIndex + 1, i), end: i + 1 };
+                }
             }
+            return null;
+        }
+
+        /**
+         * Replace every occurrence of \cmd{...} (and the star / optional-arg
+         * variants \cmd*[..]{..} and \cmd[..]{..}) using a balanced-brace scan.
+         * Works for ALL peer commands: \textbf, \textit, \emph, \texttt,
+         * \section, \subsection, \title, \author, \date, \underline, ...
+         */
+        function replaceCommand(str, cmd, replacer) {
+            const token = '\\' + cmd;
+            let out = '';
+            let i = 0;
+            while (i < str.length) {
+                const idx = str.indexOf(token, i);
+                if (idx === -1) { out += str.substring(i); break; }
+                const after = idx + token.length;
+                // Real command boundary: the char after the token must NOT be a
+                // letter, otherwise we matched a longer command (e.g. \section
+                // would falsely match \subsection). This makes every peer safe.
+                if (/[a-zA-Z]/.test(str[after] || '')) {
+                    out += str.substring(i, idx + 1);
+                    i = idx + 1;
+                    continue;
+                }
+                out += str.substring(i, idx);
+                let p = after;
+                if (str[p] === '*') p++;                       // \section*{...}
+                if (str[p] === '[') {                           // \cmd[optional]{...}
+                    let depth = 1, q = p + 1;
+                    while (q < str.length && depth > 0) {
+                        if (str[q] === '\\' && q + 1 < str.length) { q += 2; continue; }
+                        if (str[q] === '[') depth++;
+                        else if (str[q] === ']') depth--;
+                        q++;
+                    }
+                    p = q;
+                }
+                if (str[p] === '{') {
+                    const m = extractBalancedBraces(str, p);
+                    if (m) {
+                        out += replacer(m.content);
+                        i = m.end;
+                        continue;
+                    }
+                }
+                // No valid argument — emit the token literally and move on.
+                out += token;
+                i = after;
+            }
+            return out;
+        }
+
+        /**
+         * Replace every \begin{name}[opt] ... \end{name} block. The replacer
+         * receives (body, optTitle). Generic for ALL peer environments.
+         */
+        function replaceEnvironment(str, name, replacer) {
+            const beginTok = '\\begin{' + name + '}';
+            const endTok = '\\end{' + name + '}';
+            let out = '';
+            let i = 0;
+            while (true) {
+                const start = str.indexOf(beginTok, i);
+                if (start === -1) { out += str.substring(i); break; }
+                const end = str.indexOf(endTok, start + beginTok.length);
+                if (end === -1) { out += str.substring(i); break; }
+                out += str.substring(i, start);
+                let body = str.substring(start + beginTok.length, end);
+                let optTitle = '';
+                const optMatch = body.match(/^\s*\[([^\]]*)\]/);
+                if (optMatch) { optTitle = optMatch[1]; body = body.substring(optMatch[0].length); }
+                out += replacer(body, optTitle);
+                i = end + endTok.length;
+            }
+            return out;
+        }
+
+        /* =====================================================================
+           EXTENSIBLE REGISTRIES — add a peer by appending a single row.
+           ===================================================================== */
+
+        // Text / structural commands that take exactly one {...} argument.
+        const TEXT_COMMANDS = [
+            { cmd: 'section',        wrap: c => `<h2 class="text-xl font-bold mt-8 mb-4 border-b border-slate-200 pb-1.5 tracking-tight text-slate-900">${c}</h2>` },
+            { cmd: 'subsection',     wrap: c => `<h3 class="text-lg font-semibold mt-6 mb-3 tracking-tight text-slate-800">${c}</h3>` },
+            { cmd: 'subsubsection',  wrap: c => `<h4 class="text-base font-semibold mt-4 mb-2 text-slate-800">${c}</h4>` },
+            { cmd: 'paragraph',      wrap: c => `<p class="font-bold text-slate-900 mt-4 mb-1">${c}</p>` },
+            { cmd: 'textbf',         wrap: c => `<strong>${c}</strong>` },
+            { cmd: 'textit',         wrap: c => `<em>${c}</em>` },
+            { cmd: 'emph',           wrap: c => `<em>${c}</em>` },
+            { cmd: 'texttt',         wrap: c => `<code class="font-mono text-[0.85em] bg-slate-100 text-pink-700 px-1 py-0.5 rounded">${c}</code>` },
+            { cmd: 'underline',      wrap: c => `<u>${c}</u>` },
+            { cmd: 'textsc',         wrap: c => `<span style="font-variant: small-caps; letter-spacing: 0.05em;">${c}</span>` },
+            { cmd: 'textsf',         wrap: c => `<span class="font-sans">${c}</span>` },
         ];
 
-        class AppState {
-            constructor() {
-                this.notes = DEFAULT_NOTES;
-                this.activeNoteId = 'note-1';
-                this.activeCategoryFilter = 'All';
-                this.searchQuery = '';
-                this.viewMode = 'preview';
-                this.isAdmin = false;
-                this.isLocalAdmin = localStorage.getItem('noels_local_admin') === 'true';
-                this.user = null;
-                this.firebaseInitialized = false;
-            }
+        // Academic environments. Add a peer (corollary, proposition, remark, ...)
+        // by appending one row — the general replaceEnvironment handles the rest.
+        const ENV_MAP = [
+            { name: 'theorem',     title: 'Theorem',     cls: 'latex-theorem',    color: 'text-blue-700' },
+            { name: 'definition',  title: 'Definition',  cls: 'latex-definition', color: 'text-emerald-700' },
+            { name: 'lemma',       title: 'Lemma',       cls: 'latex-lemma',      color: 'text-sky-700' },
+            { name: 'proof',       title: 'Proof',       cls: 'latex-proof',      color: 'text-purple-700' },
+            { name: 'note',        title: 'Note',        cls: 'latex-note',       color: 'text-amber-700' },
+            { name: 'example',     title: 'Example',     cls: 'latex-example',    color: 'text-slate-700' },
+            { name: 'corollary',   title: 'Corollary',   cls: 'latex-theorem',    color: 'text-blue-700' },
+            { name: 'proposition', title: 'Proposition', cls: 'latex-lemma',      color: 'text-sky-700' },
+            { name: 'remark',      title: 'Remark',      cls: 'latex-note',       color: 'text-amber-700' },
+            { name: 'axiom',       title: 'Axiom',       cls: 'latex-definition', color: 'text-emerald-700' },
+        ];
 
-            getActiveNote() {
-                return this.notes.find(n => n.id === this.activeNoteId) || this.notes[0] || null;
-            }
-        }
+        /* =====================================================================
+           MATH-REGION PROTECTION + PRE-RENDERING
+           ---------------------------------------------------------------------
+           Every math region ( \[..\] , $$..$$ , $..$ ) is rendered to HTML with
+           KaTeX RIGHT NOW and stashed behind a placeholder. This guarantees:
 
-        const state = new AppState();
-        let firebaseApp = null;
-        let auth = null;
-        let db = null;
-
-        const elements = {
-            sidebar: document.getElementById('sidebar'),
-            sidebarOverlay: document.getElementById('sidebar-overlay'),
-            toggleSidebarBtn: document.getElementById('toggle-sidebar'),
-            notesList: document.getElementById('notes-list'),
-            tagFilterContainer: document.getElementById('tag-filter-container'),
-            btnNewNote: document.getElementById('btn-new-note'),
-            inputSearch: document.getElementById('input-search'),
-            noteCountDisplay: document.getElementById('note-count-display'),
-            streakCounterBadge: document.getElementById('streak-counter-badge'),
-            
-            editTitle: document.getElementById('edit-title'),
-            editCategory: document.getElementById('edit-category'),
-            editDate: document.getElementById('edit-date'),
-            editorTextarea: document.getElementById('editor-textarea'),
-            previewContainer: document.getElementById('preview-container'),
-            
-            paneEditor: document.getElementById('pane-editor'),
-            panePreview: document.getElementById('pane-preview'),
-            viewModeSplit: document.getElementById('view-mode-split'),
-            viewModeEdit: document.getElementById('view-mode-edit'),
-            viewModePreview: document.getElementById('view-mode-preview'),
-            
-            badgeAuthStatus: document.getElementById('badge-auth-status'),
-            btnAuthToggle: document.getElementById('btn-auth-toggle'),
-            iconAuthBtn: document.getElementById('icon-auth-btn'),
-            textAuthBtn: document.getElementById('text-auth-btn'),
-            modalAuth: document.getElementById('modal-auth'),
-            btnCloseAuthModal: document.getElementById('btn-close-auth-modal'),
-            formLogin: document.getElementById('form-login'),
-            authEmail: document.getElementById('auth-email'),
-            authPassword: document.getElementById('auth-password'),
-            authError: document.getElementById('auth-error'),
-            btnSwitchLocalMode: document.getElementById('btn-switch-local-mode'),
-
-            btnOpenConfig: document.getElementById('btn-open-config'),
-            modalConfig: document.getElementById('modal-config'),
-            btnCloseConfigModal: document.getElementById('btn-close-config-modal'),
-            inputFirebaseConfig: document.getElementById('input-firebase-config'),
-            btnSaveFirebaseConfig: document.getElementById('btn-save-firebase-config'),
-            btnEnableLocalAdmin: document.getElementById('btn-enable-local-admin'),
-
-            btnCopyGithub: document.getElementById('btn-copy-github'),
-            btnDeleteNote: document.getElementById('btn-delete-note'),
-            btnThemeToggle: document.getElementById('btn-theme-toggle'),
-            btnDataMenu: document.getElementById('btn-data-menu'),
-            dataDropdown: document.getElementById('data-dropdown'),
-            btnExportJson: document.getElementById('btn-export-json'),
-            btnExportMd: document.getElementById('btn-export-md'),
-            
-            btnOpenTracker: document.getElementById('btn-open-tracker'),
-            modalTracker: document.getElementById('modal-tracker'),
-            btnCloseModal: document.getElementById('btn-close-modal'),
-            btnCloseModalBottom: document.getElementById('btn-close-modal-bottom'),
-            modalStreakCount: document.getElementById('modal-streak-count'),
-            modalTotalCount: document.getElementById('modal-total-count'),
-            modalActiveDays: document.getElementById('modal-active-days'),
-            heatmapGrid: document.getElementById('heatmap-grid'),
-            
-            toast: document.getElementById('toast'),
-            toastMessage: document.getElementById('toast-message')
-        };
-
-        // Initialize Firebase securely without uncaught error crashes
-        async function initFirebaseSafe() {
-            let config = null;
-
-            // Check stored config or global environment
-            const customConfigStr = localStorage.getItem('noels_firebase_config');
-            if (customConfigStr) {
-                try { config = JSON.parse(customConfigStr); } catch(e){}
-            } else if (typeof __firebase_config !== 'undefined') {
-                try { config = JSON.parse(__firebase_config); } catch(e){}
-            }
-
-            if (!config || !config.apiKey || config.apiKey === 'demo-key' || config.apiKey.includes('API_KEY')) {
-                console.warn("Firebase credentials not configured. Using offline fallback mode.");
-                state.firebaseInitialized = false;
-                state.notes = loadLocalNotes();
-                updateAuthUI();
-                renderSidebar();
-                loadActiveNoteIntoEditor();
-                return;
-            }
-
+           1. Text-command substitution never corrupts math content (e.g. a
+              \textbf that appears inside a display equation).
+           2. The paragraph-spacing pass (\n\n -> <div>) never inserts spacers
+              inside a multi-line math block.
+           3. Characters such as '&' (used by matrices / aligned / cases) and
+              '<' are not double-encoded by an innerHTML round-trip — the
+              original read innerHTML back to run KaTeX, which turned
+              "a & b" into "a &amp; b" and broke every matrix. Pre-rendering
+              on the raw string fixes this for ALL peer math constructs.
+           ===================================================================== */
+        function renderMathToString(math, displayMode) {
             try {
-                firebaseApp = initializeApp(config);
-                auth = getAuth(firebaseApp);
-                db = getFirestore(firebaseApp);
-                state.firebaseInitialized = true;
-
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token).catch(() => {});
-                } else {
-                    await signInAnonymously(auth).catch(() => {});
-                }
-
-                onAuthStateChanged(auth, (user) => {
-                    state.user = user;
-                    state.isAdmin = state.isLocalAdmin || (user && !user.isAnonymous && user.email === OWNER_EMAIL);
-                    updateAuthUI();
-                    setupFirestoreSync();
-                });
-            } catch (err) {
-                console.warn("Firebase Auth Error: Falling back to local offline mode.", err.message);
-                state.firebaseInitialized = false;
-                state.notes = loadLocalNotes();
-                updateAuthUI();
-                renderSidebar();
-                loadActiveNoteIntoEditor();
+                return katex.renderToString(math.trim(), { displayMode, throwOnError: false });
+            } catch (e) {
+                return `<span class="text-red-500 font-mono text-xs">[Math Error]</span>`;
             }
         }
-
-        function loadLocalNotes() {
-            const saved = localStorage.getItem('noels_life_notes');
-            if (saved) {
-                try { return JSON.parse(saved); } catch (e) { return DEFAULT_NOTES; }
-            }
-            return DEFAULT_NOTES;
-        }
-
-        function saveLocalNotes() {
-            localStorage.setItem('noels_life_notes', JSON.stringify(state.notes));
-        }
-
-        function setupFirestoreSync() {
-            if (!state.firebaseInitialized || !db || !auth.currentUser) {
-                state.notes = loadLocalNotes();
-                renderSidebar();
-                loadActiveNoteIntoEditor();
-                return;
-            }
-
-            const appId = typeof __app_id !== 'undefined' ? __app_id : 'noels-life-app';
-            const notesCol = collection(db, 'artifacts', appId, 'public', 'data', 'notes');
-
-            onSnapshot(notesCol, (snapshot) => {
-                if (!snapshot.empty) {
-                    const fetchedNotes = [];
-                    snapshot.forEach((docSnap) => {
-                        fetchedNotes.push({ id: docSnap.id, ...docSnap.data() });
-                    });
-                    state.notes = fetchedNotes.sort((a, b) => new Date(b.date) - new Date(a.date));
-                } else {
-                    state.notes = loadLocalNotes();
-                }
-
-                if (!state.activeNoteId || !state.notes.find(n => n.id === state.activeNoteId)) {
-                    state.activeNoteId = state.notes[0]?.id || null;
-                }
-
-                renderSidebar();
-                loadActiveNoteIntoEditor();
-            }, (error) => {
-                console.warn("Firestore sync fallback to LocalStorage:", error.message);
-                state.notes = loadLocalNotes();
-                renderSidebar();
-                loadActiveNoteIntoEditor();
-            });
-        }
-
-        function updateAuthUI() {
-            state.isAdmin = state.isLocalAdmin || (state.user && !state.user.isAnonymous && state.user.email === OWNER_EMAIL);
-
-            if (state.isAdmin) {
-                elements.badgeAuthStatus.className = "text-xs px-2.5 py-1 rounded-full font-medium flex items-center space-x-1 bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300";
-                elements.badgeAuthStatus.innerHTML = `<i class="fa-solid fa-user-check text-[10px]"></i><span>Noel (Owner Mode)</span>`;
-                
-                elements.textAuthBtn.innerText = "Logout";
-                elements.iconAuthBtn.className = "fa-solid fa-right-from-bracket";
-                elements.btnAuthToggle.className = "text-sm bg-slate-600 hover:bg-slate-700 text-white font-medium px-3 py-1.5 rounded-lg flex items-center space-x-1.5 transition-colors shadow-sm";
-
-                elements.btnNewNote.classList.remove('hidden');
-                elements.btnDeleteNote.classList.remove('hidden');
-                elements.editTitle.removeAttribute('readonly');
-                elements.editCategory.removeAttribute('disabled');
-                elements.editDate.removeAttribute('readonly');
-                elements.editorTextarea.removeAttribute('readonly');
-
-                setViewMode('split');
-            } else {
-                elements.badgeAuthStatus.className = "text-xs px-2.5 py-1 rounded-full font-medium flex items-center space-x-1 bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300";
-                elements.badgeAuthStatus.innerHTML = `<i class="fa-solid fa-eye text-[10px]"></i><span>Visitor Mode (Read-Only)</span>`;
-
-                elements.textAuthBtn.innerText = "Noel Login";
-                elements.iconAuthBtn.className = "fa-solid fa-right-to-bracket";
-                elements.btnAuthToggle.className = "text-sm bg-brand-500 hover:bg-brand-600 text-white font-medium px-3 py-1.5 rounded-lg flex items-center space-x-1.5 transition-colors shadow-sm";
-
-                elements.btnNewNote.classList.add('hidden');
-                elements.btnDeleteNote.classList.add('hidden');
-                elements.editTitle.setAttribute('readonly', 'true');
-                elements.editCategory.setAttribute('disabled', 'true');
-                elements.editDate.setAttribute('readonly', 'true');
-                elements.editorTextarea.setAttribute('readonly', 'true');
-
-                setViewMode('preview');
-            }
-        }
-
-        function renderSidebar() {
-            const categories = ['All', 'Learning Notes', 'Daily Life', 'Research', 'Study Logs', 'Math & Physics'];
-            
-            elements.tagFilterContainer.innerHTML = categories.map(cat => {
-                const isActive = state.activeCategoryFilter === cat;
-                return `
-                    <button onclick="window.setCategoryFilter('${cat}')" class="px-2.5 py-1 rounded-full whitespace-nowrap font-medium transition-colors ${
-                        isActive 
-                        ? 'bg-brand-500 text-white' 
-                        : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
-                    }">
-                        ${cat}
-                    </button>
-                `;
-            }).join('');
-
-            const filteredNotes = state.notes.filter(note => {
-                const matchesCategory = state.activeCategoryFilter === 'All' || note.category === state.activeCategoryFilter;
-                const matchesSearch = (note.title || '').toLowerCase().includes(state.searchQuery.toLowerCase()) || 
-                                      (note.content || '').toLowerCase().includes(state.searchQuery.toLowerCase());
-                return matchesCategory && matchesSearch;
-            });
-
-            elements.noteCountDisplay.innerText = `${filteredNotes.length} entries`;
-
-            if (filteredNotes.length === 0) {
-                elements.notesList.innerHTML = `<div class="p-4 text-center text-slate-400 text-xs">No entries found.</div>`;
-            } else {
-                elements.notesList.innerHTML = filteredNotes.map(note => {
-                    const isActive = note.id === state.activeNoteId;
-                    return `
-                        <div onclick="window.selectNote('${note.id}')" class="p-3 rounded-lg cursor-pointer transition-all ${
-                            isActive 
-                            ? 'bg-brand-50 dark:bg-brand-950/40 border border-brand-200 dark:border-brand-800/60' 
-                            : 'hover:bg-slate-100 dark:hover:bg-slate-700/50 border border-transparent'
-                        }">
-                            <div class="flex justify-between items-start">
-                                <h4 class="text-sm font-semibold text-slate-800 dark:text-slate-100 line-clamp-1">${escapeHtml(note.title || 'Untitled Entry')}</h4>
-                            </div>
-                            <div class="flex justify-between items-center mt-2 text-[11px] text-slate-400">
-                                <span class="bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-1.5 py-0.5 rounded font-medium">${note.category || 'General'}</span>
-                                <span>${note.date || ''}</span>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            }
-
-            calculateStreak();
-        }
-
-        window.setCategoryFilter = (cat) => {
-            state.activeCategoryFilter = cat;
-            renderSidebar();
-        };
-
-        window.selectNote = (id) => {
-            state.activeNoteId = id;
-            loadActiveNoteIntoEditor();
-            renderSidebar();
-            elements.sidebar.classList.add('-translate-x-full');
-            elements.sidebarOverlay.classList.add('hidden');
-        };
-
-        function loadActiveNoteIntoEditor() {
-            const note = state.getActiveNote();
-            if (!note) {
-                elements.editTitle.value = '';
-                elements.editorTextarea.value = '';
-                elements.previewContainer.innerHTML = '';
-                return;
-            }
-
-            elements.editTitle.value = note.title || '';
-            elements.editCategory.value = note.category || 'Learning Notes';
-            elements.editDate.value = note.date || new Date().toISOString().split('T')[0];
-            elements.editorTextarea.value = note.content || '';
-
-            renderLivePreview();
-        }
-
-        function renderLivePreview() {
-            const markdownText = elements.editorTextarea.value;
-            let html = marked.parse(markdownText || '*No content available*');
-            elements.previewContainer.innerHTML = html;
-
-            try {
-                renderMathInElement(elements.previewContainer, {
-                    delimiters: [
-                        {left: '$$', right: '$$', display: true},
-                        {left: '$', right: '$', display: false},
-                        {left: '\\(', right: '\\)', display: false},
-                        {left: '\\[', right: '\\]', display: true}
-                    ],
-                    throwOnError: false
-                });
-            } catch (err) {
-                console.error("KaTeX render error:", err);
-            }
-        }
-
-        async function saveActiveNote() {
-            if (!state.isAdmin) return;
-            const note = state.getActiveNote();
-            if (!note) return;
-
-            note.title = elements.editTitle.value;
-            note.content = elements.editorTextarea.value;
-            note.category = elements.editCategory.value;
-            note.date = elements.editDate.value;
-
-            renderLivePreview();
-            renderSidebar();
-            saveLocalNotes();
-
-            if (state.firebaseInitialized && db && auth.currentUser) {
-                try {
-                    const appId = typeof __app_id !== 'undefined' ? __app_id : 'noels-life-app';
-                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'notes', note.id);
-                    await setDoc(docRef, {
-                        title: note.title,
-                        content: note.content,
-                        category: note.category,
-                        date: note.date
-                    }, { merge: true });
-                } catch (e) {
-                    console.warn("Firestore save error:", e);
-                }
-            }
-        }
-
-        elements.editorTextarea.addEventListener('input', saveActiveNote);
-        elements.editTitle.addEventListener('input', saveActiveNote);
-        elements.editCategory.addEventListener('change', saveActiveNote);
-        elements.editDate.addEventListener('change', saveActiveNote);
-
-        elements.inputSearch.addEventListener('input', (e) => {
-            state.searchQuery = e.target.value;
-            renderSidebar();
-        });
-
-        // Add Note
-        elements.btnNewNote.addEventListener('click', async () => {
-            if (!state.isAdmin) return;
-            const newId = 'note-' + Date.now();
-            const newNote = {
-                id: newId,
-                title: 'New Log Entry',
-                category: state.activeCategoryFilter !== 'All' ? state.activeCategoryFilter : 'Learning Notes',
-                date: new Date().toISOString().split('T')[0],
-                content: '# Daily Learning Log\n\nWrite learning notes and equations here using LaTeX syntax like $E = mc^2$.'
+        function protectAndRenderMath(str) {
+            const store = [];
+            const stash = (renderedHtml) => {
+                store.push(renderedHtml);
+                return '\u0000MATH' + (store.length - 1) + '\u0000';
             };
-
-            state.notes.unshift(newNote);
-            state.activeNoteId = newId;
-            saveLocalNotes();
-            renderSidebar();
-            loadActiveNoteIntoEditor();
-
-            if (state.firebaseInitialized && db) {
-                try {
-                    const appId = typeof __app_id !== 'undefined' ? __app_id : 'noels-life-app';
-                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'notes', newId);
-                    await setDoc(docRef, newNote);
-                    showToast('New entry synced to cloud!');
-                } catch (e) {
-                    showToast('Saved locally');
-                }
-            } else {
-                showToast('Entry created locally');
-            }
-        });
-
-        // Delete Note
-        elements.btnDeleteNote.addEventListener('click', async () => {
-            if (!state.isAdmin || !state.activeNoteId) return;
-            const note = state.getActiveNote();
-            if (confirm(`Delete "${note?.title}"?`)) {
-                const idToDelete = state.activeNoteId;
-                state.notes = state.notes.filter(n => n.id !== idToDelete);
-                state.activeNoteId = state.notes[0]?.id || null;
-                saveLocalNotes();
-                renderSidebar();
-                loadActiveNoteIntoEditor();
-
-                if (state.firebaseInitialized && db) {
-                    try {
-                        const appId = typeof __app_id !== 'undefined' ? __app_id : 'noels-life-app';
-                        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'notes', idToDelete);
-                        await deleteDoc(docRef);
-                        showToast('Entry deleted');
-                    } catch (e) {
-                        showToast('Deleted locally');
-                    }
-                } else {
-                    showToast('Deleted locally');
-                }
-            }
-        });
-
-        // Auth Trigger
-        elements.btnAuthToggle.addEventListener('click', async () => {
-            if (state.isAdmin) {
-                state.isLocalAdmin = false;
-                localStorage.removeItem('noels_local_admin');
-                if (state.firebaseInitialized && auth) {
-                    await signOut(auth).catch(() => {});
-                    await signInAnonymously(auth).catch(() => {});
-                }
-                updateAuthUI();
-                showToast('Logged out to Visitor Mode');
-            } else {
-                elements.authEmail.value = OWNER_EMAIL;
-                elements.authPassword.value = '';
-                elements.authError.classList.add('hidden');
-                elements.modalAuth.classList.remove('hidden');
-            }
-        });
-
-        elements.btnCloseAuthModal.addEventListener('click', () => {
-            elements.modalAuth.classList.add('hidden');
-        });
-
-        elements.formLogin.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = elements.authEmail.value.trim();
-            const password = elements.authPassword.value.trim();
-
-            // Client pre-check block
-            if (email.toLowerCase() !== OWNER_EMAIL.toLowerCase()) {
-                elements.authError.innerText = "Access Denied: Only imanuelrava790@gmail.com is authorized to edit this page.";
-                elements.authError.classList.remove('hidden');
-                return;
-            }
-
-            if (!state.firebaseInitialized) {
-                elements.authError.innerText = "Firebase credentials not active. Use 'Local Offline Admin Mode' below or click 'Firebase Setup' to configure.";
-                elements.authError.classList.remove('hidden');
-                return;
-            }
-
-            try {
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                
-                // Security Guardrail: Immediately block and sign out any other user
-                if (!userCredential.user || userCredential.user.email?.toLowerCase() !== OWNER_EMAIL.toLowerCase()) {
-                    await signOut(auth).catch(() => {});
-                    await signInAnonymously(auth).catch(() => {});
-                    state.isAdmin = false;
-                    updateAuthUI();
-                    elements.authError.innerText = "Access Denied: Only imanuelrava790@gmail.com is authorized to edit this page.";
-                    elements.authError.classList.remove('hidden');
-                    return;
-                }
-
-                elements.modalAuth.classList.add('hidden');
-                showToast('Authenticated as Owner!');
-            } catch (err) {
-                elements.authError.innerText = err.message || "Invalid credentials.";
-                elements.authError.classList.remove('hidden');
-            }
-        });
-
-        // Offline / Local Admin Mode Fallback
-        function enableLocalAdmin() {
-            state.isLocalAdmin = true;
-            localStorage.setItem('noels_local_admin', 'true');
-            updateAuthUI();
-            elements.modalAuth.classList.add('hidden');
-            elements.modalConfig.classList.add('hidden');
-            showToast('Local Offline Admin Mode enabled!');
+            str = str.replace(/\\\[([\s\S]*?)\\\]/g, (m, math) =>
+                stash(`<div class="my-4 text-center overflow-x-auto">${renderMathToString(math, true)}</div>`));
+            str = str.replace(/\$\$([\s\S]*?)\$\$/g, (m, math) =>
+                stash(`<div class="my-4 text-center overflow-x-auto">${renderMathToString(math, true)}</div>`));
+            str = str.replace(/\$([^\$\n]+)\$/g, (m, math) => stash(renderMathToString(math, false)));
+            return { str, store };
+        }
+        function restoreMath(str, store) {
+            return str.replace(/\u0000MATH(\d+)\u0000/g, (m, i) => store[+i] || '');
         }
 
-        elements.btnSwitchLocalMode.addEventListener('click', enableLocalAdmin);
-        elements.btnEnableLocalAdmin.addEventListener('click', enableLocalAdmin);
+        /* =====================================================================
+           COMPILER — uses the general handlers above.
+           ===================================================================== */
+        function compileLaTeX() {
+            const startTime = performance.now();
+            const code = editor.value;
 
-        // Firebase Config Modal Setup
-        elements.btnOpenConfig.addEventListener('click', () => {
-            const stored = localStorage.getItem('noels_firebase_config');
-            elements.inputFirebaseConfig.value = stored || '';
-            elements.modalConfig.classList.remove('hidden');
+            // Update Word & Character Counts
+            const chars = code.length;
+            const words = code.trim() ? code.trim().split(/\s+/).length : 0;
+            charCountDisplay.innerText = `${chars} chars`;
+            wordCountDisplay.innerText = `${words} words`;
+
+            // Update Line Numbers Gutter
+            const lines = code.split('\n').length;
+            gutter.innerHTML = Array.from({ length: lines }, (_, i) => i + 1).join('<br>');
+
+            let html = code;
+
+            // Strip LaTeX Comments
+            html = html.replace(/%[^\n]*/g, '');
+
+            // Strip Document Environment Wrappers & documentclass
+            html = html.replace(/\\begin\{document\}/g, '');
+            html = html.replace(/\\end\{document\}/g, '');
+            html = html.replace(/\\documentclass(\[[^\]]*\])?\{[^}]*\}/g, '');
+
+            // Extract Title / Author / Date via the GENERAL command handler
+            // (now works with nested braces, e.g. \title{A {Nested} Title}).
+            let title = '', author = '', date = '';
+            html = replaceCommand(html, 'title',  c => { title = c; return ''; });
+            html = replaceCommand(html, 'author', c => { author = c; return ''; });
+            html = replaceCommand(html, 'date',   c => {
+                date = (c.trim() === '\\today')
+                    ? new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+                    : c;
+                return '';
+            });
+
+            // Handle \maketitle
+            let headerHTML = '';
+            if (/\\maketitle/.test(html) || title || author || date) {
+                html = html.replace(/\\maketitle/g, '');
+                headerHTML = `
+                <div class="text-center mb-10 pb-6 border-b border-slate-200">
+                    ${title ? `<h1 class="text-3xl font-bold tracking-tight text-slate-900 mb-3">${title}</h1>` : ''}
+                    ${author ? `<p class="text-sm font-sans font-medium text-slate-600 mb-1.5">${author}</p>` : ''}
+                    ${date ? `<p class="text-xs font-sans text-slate-500">${date}</p>` : ''}
+                </div>`;
+            }
+
+            // Parse Abstract Environment (via the general handler)
+            html = replaceEnvironment(html, 'abstract', (body) => {
+                return `<div class="my-8 px-10 py-4 bg-slate-50 border-y border-slate-200 text-xs leading-relaxed italic text-slate-700">
+                    <span class="font-bold not-italic font-sans text-slate-900 block text-center mb-1.5 uppercase tracking-wider text-[10px]">Abstract</span>
+                    ${body}
+                </div>`;
+            });
+
+            // Handle Page Breaks
+            html = html.replace(/\\newpage/g, '<div class="page-break"></div>');
+
+            // Protect + pre-render math regions BEFORE any text-command
+            // substitution. KaTeX therefore runs on the raw string (so '&' in
+            // matrices is not double-encoded) and the rendered HTML is stashed
+            // behind placeholders that survive every subsequent pass.
+            const { str: htmlProt, store: mathStore } = protectAndRenderMath(html);
+            html = htmlProt;
+
+            // Apply EVERY text command in the registry (general, balanced braces).
+            for (const { cmd, wrap } of TEXT_COMMANDS) {
+                html = replaceCommand(html, cmd, c => wrap(c));
+            }
+
+            // Spacing macros
+            html = html.replace(/\\quad/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+            html = html.replace(/\\qquad/g, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+
+            // Apply EVERY environment in the registry (general handler).
+            for (const env of ENV_MAP) {
+                html = replaceEnvironment(html, env.name, (body, optTitle) => {
+                    return `<div class="latex-env ${env.cls}">
+                        <span class="latex-env-label ${env.color}">${env.title}${optTitle ? `<span class="opt-title">(${optTitle})</span>` : ''}</span>
+                        <div class="latex-env-body">${body}</div>
+                    </div>`;
+                });
+            }
+
+            // Lists
+            html = html.replace(/\\begin\{itemize\}/g, '<ul class="list-disc ml-6 my-3 space-y-1.5">');
+            html = html.replace(/\\end\{itemize\}/g, '</ul>');
+            html = html.replace(/\\begin\{enumerate\}/g, '<ol class="list-decimal ml-6 my-3 space-y-1.5">');
+            html = html.replace(/\\end\{enumerate\}/g, '</ol>');
+            html = html.replace(/\\item\s+(.*)/g, '<li>$1</li>');
+
+            // Paragraph Spacing — safe: math is still placeholdered here, so a
+            // blank line inside a display equation can never become a spacer.
+            html = html.replace(/\n\n/g, '<div class="h-3"></div>');
+
+            // Restore the pre-rendered KaTeX HTML into its placeholders.
+            html = restoreMath(html, mathStore);
+
+            // Inject Output (no second KaTeX pass needed — math is already HTML).
+            renderedDoc.innerHTML = headerHTML + html;
+
+            const endTime = performance.now();
+            compileBadge.innerText = `${Math.round(endTime - startTime)}ms`;
+        }
+
+        /* =====================================================================
+           CARET POSITION (FIXED — was undefined in the original, which threw a
+           ReferenceError on every keystroke and silently broke auto-compile).
+           ===================================================================== */
+        function updateCaretPos() {
+            const pos = editor.selectionStart;
+            const before = editor.value.substring(0, pos);
+            const lineStart = before.lastIndexOf('\n') + 1;
+            const ln = (before.match(/\n/g) || []).length + 1;
+            const col = pos - lineStart + 1;
+            caretPosDisplay.innerText = `Ln ${ln}, Col ${col}`;
+        }
+
+        // Auto-Compile / Manual Trigger
+        editor.addEventListener('input', () => {
+            updateCaretPos();
+            if (autoCompileToggle.checked) {
+                compileLaTeX();
+            }
+        });
+        editor.addEventListener('keyup', updateCaretPos);
+        editor.addEventListener('click', updateCaretPos);
+
+        recompileBtn.addEventListener('click', () => {
+            const icon = document.getElementById('recompile-icon');
+            icon.classList.add('animate-spin');
+            compileLaTeX();
+            setTimeout(() => icon.classList.remove('animate-spin'), 300);
+            showToast('Recompiled successfully');
         });
 
-        elements.btnCloseConfigModal.addEventListener('click', () => {
-            elements.modalConfig.classList.add('hidden');
-        });
+        /* =====================================================================
+           GENERAL RIBBON SNIPPET INSERTION (applicable to ALL peers)
+           ---------------------------------------------------------------------
+           The original hard-coded only four cases:
+             snippet.includes('${x}$'), '\\textbf{text}', '\\textit{text}', '\n  \n'
+           Every other ribbon button ( \texttt, \vec, \sqrt, \frac, \mathbb, ... )
+           silently ignored the user's selection.
 
-        elements.btnSaveFirebaseConfig.addEventListener('click', () => {
-            const rawVal = elements.inputFirebaseConfig.value.trim();
-            try {
-                const parsed = JSON.parse(rawVal);
-                if (!parsed.apiKey || !parsed.projectId) {
-                    throw new Error("Config must contain at least 'apiKey' and 'projectId'");
+           The new buildInsertContent() detects the GENERIC shape of a snippet
+           and wraps the selection into the correct placeholder for ANY peer:
+             1. inline math   $x$ / ${x}$         -> $selection$              2. environment   \begin{e}..\end{e}  -> \begin{e}selection\end{e}
+             3. first {...}   \cmd{..}{..}        -> \cmd{selection}..
+             4. bare command  \pi, \infty         -> unchanged
+           ===================================================================== */
+        function buildInsertContent(snippet, selectedText) {
+            if (!selectedText) return snippet;
+
+            // 1. Inline math: $x$ or ${x}$             const inlineMatch = snippet.match(/\$\{?x\}?\$/);
+            if (inlineMatch) {
+                const i = inlineMatch.index;
+                return snippet.substring(0, i) + `$${selectedText}$` + snippet.substring(i + inlineMatch[0].length);
+            }
+
+            // 2. Environment: \begin{env} ... \end{env}  -> wrap selection as body
+            const envMatch = snippet.match(/\\begin\{(\w+)\}([\s\S]*?)\\end\{\1\}/);
+            if (envMatch) {
+                return snippet.replace(envMatch[0], `\\begin{${envMatch[1]}}${selectedText}\\end{${envMatch[1]}}`);
+            }
+
+            // 3. First {...} argument becomes the wrap target.
+            //    Covers \textbf{text}, \textit{text}, \texttt{code}, \vec{x},
+            //    \bar{x}, \sqrt{x}, \frac{a}{b}, \sqrt[n]{x}, \mathbb{R}, etc.
+            const firstBrace = snippet.indexOf('{');
+            if (firstBrace !== -1) {
+                const m = extractBalancedBraces(snippet, firstBrace);
+                if (m) {
+                    return snippet.substring(0, firstBrace) + `{${selectedText}}` + snippet.substring(m.end);
                 }
-                localStorage.setItem('noels_firebase_config', JSON.stringify(parsed));
-                showToast('Firebase configuration saved! Reloading...');
-                setTimeout(() => window.location.reload(), 1000);
-            } catch (err) {
-                alert("Invalid JSON format or missing required fields: " + err.message);
             }
-        });
 
-        function setViewMode(mode) {
-            state.viewMode = mode;
-            elements.viewModeSplit.className = "px-2.5 py-1 rounded-md font-medium transition-colors text-slate-600 dark:text-slate-300 hover:text-slate-900";
-            elements.viewModeEdit.className = "px-2.5 py-1 rounded-md font-medium transition-colors text-slate-600 dark:text-slate-300 hover:text-slate-900";
-            elements.viewModePreview.className = "px-2.5 py-1 rounded-md font-medium transition-colors text-slate-600 dark:text-slate-300 hover:text-slate-900";
-
-            const activeClass = "px-2.5 py-1 rounded-md font-medium transition-colors bg-white dark:bg-slate-600 shadow-sm text-slate-800 dark:text-slate-100";
-
-            if (mode === 'split') {
-                elements.viewModeSplit.className = activeClass;
-                elements.paneEditor.classList.remove('hidden');
-                elements.panePreview.classList.remove('hidden');
-            } else if (mode === 'edit') {
-                elements.viewModeEdit.className = activeClass;
-                elements.paneEditor.classList.remove('hidden');
-                elements.panePreview.classList.add('hidden');
-            } else if (mode === 'preview') {
-                elements.viewModePreview.className = activeClass;
-                elements.paneEditor.classList.add('hidden');
-                elements.panePreview.classList.remove('hidden');
-            }
+            // 4. Bare command (\pi, \infty, \quad, \newpage, ...) — no wrap target.
+            return snippet;
         }
 
-        elements.viewModeSplit.addEventListener('click', () => setViewMode('split'));
-        elements.viewModeEdit.addEventListener('click', () => setViewMode('edit'));
-        elements.viewModePreview.addEventListener('click', () => setViewMode('preview'));
+        // Ribbon Tool Click Handler — now fully general.
+        document.querySelectorAll('.ribbon-tool-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const snippet = btn.getAttribute('data-snippet');
+                const offset = parseInt(btn.getAttribute('data-offset') || snippet.length, 10);
 
-        // Copy GitHub Markdown
-        elements.btnCopyGithub.addEventListener('click', () => {
-            const note = state.getActiveNote();
-            if (!note) return;
+                const start = editor.selectionStart;
+                const end = editor.selectionEnd;
+                const val = editor.value;
+                const selectedText = val.substring(start, end);
 
-            const text = `---
-title: "${note.title}"
-category: "${note.category}"
-date: "${note.date}"
-author: "Noel"
----
+                const insertContent = buildInsertContent(snippet, selectedText);
 
-${note.content}`;
+                editor.value = val.substring(0, start) + insertContent + val.substring(end);
+                editor.focus();
 
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
+                // When text was wrapped, place the cursor at the end of the
+                // inserted content; otherwise use the snippet's declared offset.
+                const newPos = selectedText.length > 0 ? start + insertContent.length : start + offset;
+                editor.selectionStart = newPos;
+                editor.selectionEnd = newPos;
 
-            showToast('Copied GitHub-ready Markdown!');
+                updateCaretPos();
+                if (autoCompileToggle.checked) compileLaTeX();
+                showToast(`Inserted component`);
+            });
         });
 
-        // Data Sync Dropdown
-        elements.btnDataMenu.addEventListener('click', (e) => {
-            e.stopPropagation();
-            elements.dataDropdown.classList.toggle('hidden');
-        });
-        document.addEventListener('click', () => elements.dataDropdown.classList.add('hidden'));
-
-        elements.btnExportJson.addEventListener('click', () => {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state.notes, null, 2));
-            const anchor = document.createElement('a');
-            anchor.setAttribute("href", dataStr);
-            anchor.setAttribute("download", `noels_life_backup_${new Date().toISOString().split('T')[0]}.json`);
-            document.body.appendChild(anchor);
-            anchor.click();
-            anchor.remove();
-            showToast('Backup downloaded!');
+        // Copy Raw LaTeX Source Code
+        document.getElementById('copy-tex-btn').addEventListener('click', () => {
+            navigator.clipboard.writeText(editor.value).then(() => {
+                showToast('Raw LaTeX source copied to clipboard');
+            }).catch(() => {
+                const textArea = document.createElement("textarea");
+                textArea.value = editor.value;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showToast('Raw LaTeX source copied');
+            });
         });
 
-        elements.btnExportMd.addEventListener('click', () => {
-            const note = state.getActiveNote();
-            if (!note) return;
-            const blob = new Blob([note.content], { type: 'text/markdown;charset=utf-8' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `${note.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}.md`;
-            link.click();
-            showToast('Markdown file exported!');
+        // Download PDF Action
+        document.getElementById('download-pdf-btn').addEventListener('click', () => {
+            window.print();
         });
 
-        function calculateStreak() {
-            const datesWithNotes = new Set(state.notes.map(n => n.date));
-            let streak = 0;
-            let checkDate = new Date();
+        // Download .tex Action
+        document.getElementById('download-tex-btn').addEventListener('click', () => {
+            const blob = new Blob([editor.value], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'article_notes.tex';
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Downloaded .tex file');
+        });
 
-            while (true) {
-                const dateStr = checkDate.toISOString().split('T')[0];
-                if (datesWithNotes.has(dateStr)) {
-                    streak++;
-                    checkDate.setDate(checkDate.getDate() - 1);
-                } else if (streak === 0) {
-                    checkDate.setDate(checkDate.getDate() - 1);
-                    const yesterdayStr = checkDate.toISOString().split('T')[0];
-                    if (datesWithNotes.has(yesterdayStr)) {
-                        streak++;
-                        checkDate.setDate(checkDate.getDate() - 1);
-                    } else {
-                        break;
-                    }
-                } else {
-                    break;
-                }
+        // Zoom Controls for A4 PDF Page
+        document.getElementById('zoom-in-btn').addEventListener('click', () => {
+            if (zoomLevel < 1.4) {
+                zoomLevel += 0.1;
+                applyZoom();
             }
+        });
 
-            elements.streakCounterBadge.innerHTML = `🔥 ${streak} Days Streak`;
-            return streak;
+        document.getElementById('zoom-out-btn').addEventListener('click', () => {
+            if (zoomLevel > 0.5) {
+                zoomLevel -= 0.1;
+                applyZoom();
+            }
+        });
+
+        document.getElementById('zoom-fit-btn').addEventListener('click', () => {
+            zoomLevel = 1.0;
+            applyZoom();
+        });
+
+        function applyZoom() {
+            pdfPaper.style.transform = `scale(${zoomLevel})`;
+            document.getElementById('zoom-level-display').innerText = `${Math.round(zoomLevel * 100)}%`;
         }
 
-        function renderHeatmap() {
-            const datesWithNotes = new Set(state.notes.map(n => n.date));
-            const totalEntries = state.notes.length;
-            const streak = calculateStreak();
+        // Find & Replace Modal Logic
+        const findModal = document.getElementById('find-modal');
+        document.getElementById('open-find-btn').addEventListener('click', () => {
+            findModal.classList.remove('hidden');
+            document.getElementById('find-input').focus();
+        });
+        document.getElementById('close-find-btn').addEventListener('click', () => {
+            findModal.classList.add('hidden');
+        });
 
-            elements.modalStreakCount.innerText = `${streak} Days`;
-            elements.modalTotalCount.innerText = totalEntries;
-
-            let activeDaysCount = 0;
-            const today = new Date();
-            let gridHtml = '';
-
-            for (let i = 27; i >= 0; i--) {
-                const d = new Date();
-                d.setDate(today.getDate() - i);
-                const dateStr = d.toISOString().split('T')[0];
-                const hasActivity = datesWithNotes.has(dateStr);
-
-                if (hasActivity) activeDaysCount++;
-
-                gridHtml += `
-                    <div class="flex flex-col items-center">
-                        <div title="${dateStr}" class="w-full aspect-square rounded-md flex items-center justify-center text-[10px] font-bold ${
-                            hasActivity 
-                            ? 'bg-brand-500 text-white shadow-sm' 
-                            : 'bg-slate-200 dark:bg-slate-800 text-slate-400'
-                        }">
-                            ${d.getDate()}
-                        </div>
-                    </div>
-                `;
+        document.getElementById('exec-replace-btn').addEventListener('click', () => {
+            const findVal = document.getElementById('find-input').value;
+            const replaceVal = document.getElementById('replace-input').value;
+            if (findVal) {
+                editor.value = editor.value.replaceAll(findVal, replaceVal);
+                compileLaTeX();
+                findModal.classList.add('hidden');
+                showToast('Replaced all occurrences');
             }
-
-            elements.modalActiveDays.innerText = activeDaysCount;
-            elements.heatmapGrid.innerHTML = gridHtml;
-        }
-
-        elements.btnOpenTracker.addEventListener('click', () => {
-            renderHeatmap();
-            elements.modalTracker.classList.remove('hidden');
         });
 
-        const closeModal = () => elements.modalTracker.classList.add('hidden');
-        elements.btnCloseModal.addEventListener('click', closeModal);
-        elements.btnCloseModalBottom.addEventListener('click', closeModal);
-
-        elements.toggleSidebarBtn.addEventListener('click', () => {
-            elements.sidebar.classList.remove('-translate-x-full');
-            elements.sidebarOverlay.classList.remove('hidden');
-        });
-        elements.sidebarOverlay.addEventListener('click', () => {
-            elements.sidebar.classList.add('-translate-x-full');
-            elements.sidebarOverlay.classList.add('hidden');
+        // Theme Toggle
+        const toggleThemeBtn = document.getElementById('toggle-theme-btn');
+        toggleThemeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            showToast('Theme updated');
         });
 
-        elements.btnThemeToggle.addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        // Resizable Splitter Logic
+        const splitter = document.getElementById('splitter-divider');
+        const editorContainer = document.getElementById('editor-container');
+        const previewPane = document.getElementById('preview-pane');
+        const workspace = document.getElementById('workspace-container');
+
+        let isDragging = false;
+
+        splitter.addEventListener('mousedown', () => {
+            isDragging = true;
+            splitter.classList.add('dragging');
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const rect = workspace.getBoundingClientRect();
+            let offset = e.clientX - rect.left;
+            let total = rect.width;
+            let percentage = (offset / total) * 100;
+
+            if (percentage >= 20 && percentage <= 80) {
+                editorContainer.style.width = `${percentage}%`;
+                previewPane.style.width = `${100 - percentage}%`;
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+                splitter.classList.remove('dragging');
+            }
         });
 
         function showToast(msg) {
-            elements.toastMessage.innerText = msg;
-            elements.toast.classList.remove('translate-y-20', 'opacity-0');
-            elements.toast.classList.add('translate-y-0', 'opacity-100');
+            toastMsg.innerText = msg;
+            toastBanner.classList.remove('opacity-0', 'translate-y-2', 'pointer-events-none');
+            toastBanner.classList.add('opacity-100', 'translate-y-0');
             setTimeout(() => {
-                elements.toast.classList.remove('translate-y-0', 'opacity-100');
-                elements.toast.classList.add('translate-y-20', 'opacity-0');
-            }, 2500);
+                toastBanner.classList.remove('opacity-100', 'translate-y-0');
+                toastBanner.classList.add('opacity-0', 'translate-y-2', 'pointer-events-none');
+            }, 2200);
         }
 
-        function escapeHtml(str) {
-            return (str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-        }
-
-        window.onload = function() {
-            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            }
-            initFirebaseSafe();
-        };
+        // Init App with Default Article Template
+        window.addEventListener('DOMContentLoaded', () => {
+            editor.value = DEFAULT_ARTICLE_TEMPLATE;
+            renderRibbonPreviews();
+            compileLaTeX();
+            updateCaretPos();
+        });
     </script>
 </body>
 </html>
