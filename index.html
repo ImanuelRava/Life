@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noel's Life - Daily Life & Learning Log</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- KaTeX CSS and JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <!-- MarkedJS for Markdown Rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.4); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(156, 163, 175, 0.6); }
+
+        .markdown-preview h1 { font-size: 1.75rem; font-weight: 700; margin-top: 1rem; margin-bottom: 0.5rem; border-bottom: 1px solid currentColor; padding-bottom: 0.25rem; }
+        .markdown-preview h2 { font-size: 1.35rem; font-weight: 600; margin-top: 0.85rem; margin-bottom: 0.4rem; }
+        .markdown-preview h3 { font-size: 1.15rem; font-weight: 600; margin-top: 0.75rem; margin-bottom: 0.3rem; }
+        .markdown-preview p { margin-bottom: 0.75rem; line-height: 1.6; }
+        .markdown-preview ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 0.75rem; }
+        .markdown-preview ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 0.75rem; }
+        .markdown-preview blockquote { border-left: 4px solid #0284c7; padding-left: 1rem; margin-left: 0; margin-bottom: 0.75rem; opacity: 0.9; font-style: italic; }
+        .markdown-preview code { background-color: rgba(156, 163, 175, 0.2); padding: 0.15rem 0.3rem; border-radius: 0.25rem; font-family: monospace; font-size: 0.9em; }
+        .markdown-preview pre code { display: block; padding: 0.75rem; overflow-x: auto; background-color: rgba(0, 0, 0, 0.1); border-radius: 0.375rem; }
+        .dark .markdown-preview pre code { background-color: rgba(0, 0, 0, 0.4); }
+        .katex-display { margin: 1em 0; overflow-x: auto; overflow-y: hidden; padding: 0.2rem 0; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 h-full flex flex-col font-sans transition-colors duration-200">
+
+    <!-- Top Navigation Header -->
+    <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-4 py-3 flex items-center justify-between shrink-0 shadow-sm z-10">
+        <div class="flex items-center space-x-3">
+            <button id="toggle-sidebar" class="md:hidden text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 p-2 rounded-lg">
+                <i class="fa-solid fa-bars text-lg"></i>
+            </button>
+            <div class="flex items-center space-x-2">
+                <span class="bg-brand-500 text-white p-2 rounded-lg text-lg flex items-center justify-center w-9 h-9">
+                    <i class="fa-solid fa-book-open text-base"></i>
+                </span>
+                <h1 class="text-xl font-bold bg-gradient-to-r from-brand-600 to-indigo-600 bg-clip-text text-transparent">
+                    Noel's Life
+                </h1>
+            </div>
+            
+            <!-- Auth Status Indicator -->
+            <span id="badge-auth-status" class="text-xs px-2.5 py-1 rounded-full font-medium flex items-center space-x-1 bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300">
+                <i class="fa-solid fa-eye text-[10px]"></i>
+                <span>Visitor Mode (Read-Only)</span>
+            </span>
+            <!-- Security Badge Notice -->
+            <span class="hidden lg:flex text-[11px] bg-slate-100 dark:bg-slate-700/60 text-slate-600 dark:text-slate-300 px-2.5 py-1 rounded-md border border-slate-200 dark:border-slate-600 items-center space-x-1">
+                <i class="fa-solid fa-shield-halved text-emerald-500"></i>
+                <span>Public: Read-Only | Owner: <strong class="text-slate-800 dark:text-slate-100 font-medium">imanuelrava790@gmail.com</strong></span>
+            </span>
+        </div>
+
+        <div class="flex items-center space-x-2 sm:space-x-3">
+            <!-- Firebase Config Button -->
+            <button id="btn-open-config" class="flex items-center space-x-1 text-xs bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-2.5 py-1.5 rounded-lg transition-colors" title="Configure Firebase Credentials">
+                <i class="fa-solid fa-gear text-slate-500"></i>
+                <span class="hidden md:inline font-medium">Firebase Setup</span>
+            </button>
+
+            <!-- Activity Tracker Button -->
+            <button id="btn-open-tracker" class="flex items-center space-x-1 text-sm bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-3 py-1.5 rounded-lg transition-colors">
+                <i class="fa-solid fa-calendar-check text-brand-500"></i>
+                <span class="hidden sm:inline font-medium">Activity Tracker</span>
+            </button>
+
+            <!-- Export / Backup Dropdown -->
+            <div class="relative inline-block text-left" id="container-data-sync">
+                <button id="btn-data-menu" class="flex items-center space-x-1 text-sm bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-3 py-1.5 rounded-lg transition-colors">
+                    <i class="fa-solid fa-file-import text-indigo-500"></i>
+                    <span class="hidden sm:inline font-medium">Export</span>
+                    <i class="fa-solid fa-chevron-down text-xs ml-1"></i>
+                </button>
+                <div id="data-dropdown" class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-slate-800 ring-1 ring-black ring-opacity-5 z-20 py-1 border border-slate-200 dark:border-slate-700">
+                    <button id="btn-export-json" class="w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center space-x-2">
+                        <i class="fa-solid fa-download w-4"></i>
+                        <span>Export Backup (JSON)</span>
+                    </button>
+                    <button id="btn-export-md" class="w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center space-x-2">
+                        <i class="fa-brands fa-markdown w-4"></i>
+                        <span>Export Note (.md)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Auth Login / Logout Button -->
+            <button id="btn-auth-toggle" class="text-sm bg-brand-500 hover:bg-brand-600 text-white font-medium px-3 py-1.5 rounded-lg flex items-center space-x-1.5 transition-colors shadow-sm">
+                <i class="fa-solid fa-right-to-bracket" id="icon-auth-btn"></i>
+                <span id="text-auth-btn">Noel Login</span>
+            </button>
+
+            <!-- Theme Toggle -->
+            <button id="btn-theme-toggle" class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" title="Toggle Theme">
+                <i class="fa-solid fa-moon text-lg dark:hidden"></i>
+                <i class="fa-solid fa-sun text-lg hidden dark:block"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Workspace Container -->
+    <div class="flex flex-1 overflow-hidden relative">
+
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="fixed md:static inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out w-72 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col z-20 shadow-lg md:shadow-none">
+            
+            <div class="p-3 border-b border-slate-200 dark:border-slate-700 flex flex-col space-y-2">
+                <!-- Create Button (Owner Only) -->
+                <button id="btn-new-note" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center space-x-2 shadow-sm transition-all hover:shadow hidden">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>New Entry</span>
+                </button>
+                
+                <!-- Search Input -->
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+                    <input type="text" id="input-search" placeholder="Search Noel's notes or math..." class="w-full pl-8 pr-3 py-1.5 text-sm bg-slate-100 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100">
+                </div>
+            </div>
+
+            <!-- Categories Tag Filter -->
+            <div class="px-3 py-2 border-b border-slate-200 dark:border-slate-700 overflow-x-auto flex space-x-1 text-xs shrink-0 no-scrollbar" id="tag-filter-container">
+            </div>
+
+            <!-- Entries List -->
+            <div class="flex-1 overflow-y-auto p-2 space-y-1" id="notes-list">
+            </div>
+
+            <!-- Sidebar Footer -->
+            <div class="p-3 border-t border-slate-200 dark:border-slate-700 text-xs text-slate-500 dark:text-slate-400 flex justify-between items-center bg-slate-50 dark:bg-slate-800/50">
+                <span id="note-count-display">0 entries</span>
+                <span id="streak-counter-badge" class="bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-full font-medium">🔥 0 Days Streak</span>
+            </div>
+        </aside>
+
+        <!-- Sidebar Overlay on Mobile -->
+        <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/50 z-10 hidden md:hidden"></div>
+
+        <!-- Main Workspace -->
+        <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-50 dark:bg-slate-900">
+
+            <!-- Active Note Controls -->
+            <div class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-4 py-2 flex flex-wrap items-center justify-between gap-2 shrink-0">
+                
+                <div class="flex items-center space-x-2 flex-1 min-w-[200px]">
+                    <select id="edit-category" disabled class="text-xs bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded px-2 py-1 font-medium text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 disabled:opacity-80">
+                        <option value="Learning Notes">Learning Notes</option>
+                        <option value="Daily Life">Daily Life</option>
+                        <option value="Research">Research</option>
+                        <option value="Study Logs">Study Logs</option>
+                        <option value="Math & Physics">Math & Physics</option>
+                    </select>
+                    <input type="date" id="edit-date" readonly class="text-xs bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded px-2 py-1 font-medium text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+
+                <!-- Editor Mode Controls -->
+                <div class="flex items-center space-x-1 sm:space-x-2">
+                    <div id="view-mode-container" class="bg-slate-100 dark:bg-slate-700 p-0.5 rounded-lg flex items-center text-xs">
+                        <button id="view-mode-split" class="px-2.5 py-1 rounded-md font-medium transition-colors text-slate-600 dark:text-slate-300 hover:text-slate-900" title="Split Screen">
+                            <i class="fa-solid fa-columns"></i> <span class="hidden sm:inline ml-1">Split</span>
+                        </button>
+                        <button id="view-mode-edit" class="px-2.5 py-1 rounded-md font-medium transition-colors text-slate-600 dark:text-slate-300 hover:text-slate-900" title="Editor Only">
+                            <i class="fa-solid fa-pen-to-square"></i> <span class="hidden sm:inline ml-1">Edit</span>
+                        </button>
+                        <button id="view-mode-preview" class="px-2.5 py-1 rounded-md font-medium transition-colors bg-white dark:bg-slate-600 shadow-sm text-slate-800 dark:text-slate-100" title="Preview Only">
+                            <i class="fa-solid fa-eye"></i> <span class="hidden sm:inline ml-1">Preview</span>
+                        </button>
+                    </div>
+
+                    <button id="btn-copy-github" class="text-xs bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 px-2.5 py-1.5 rounded-lg font-medium flex items-center space-x-1 transition-colors" title="Copy formatted Markdown for GitHub Commit">
+                        <i class="fa-brands fa-github"></i>
+                        <span class="hidden md:inline">Copy Markdown</span>
+                    </button>
+
+                    <button id="btn-delete-note" class="text-xs bg-rose-50 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800 hover:bg-rose-100 dark:hover:bg-rose-900/50 px-2.5 py-1.5 rounded-lg font-medium transition-colors hidden" title="Delete Entry">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Active Note Title -->
+            <div class="px-4 py-2 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+                <input type="text" id="edit-title" readonly placeholder="Entry Title..." class="w-full text-lg sm:text-xl font-bold bg-transparent text-slate-900 dark:text-slate-50 focus:outline-none placeholder-slate-400">
+            </div>
+
+            <!-- Workspace Pane -->
+            <div class="flex-1 flex flex-col md:flex-row overflow-hidden relative" id="workspace-container">
+                
+                <!-- Left: Markdown & LaTeX Input -->
+                <div id="pane-editor" class="flex-1 flex flex-col h-full border-r border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 hidden">
+                    <div class="bg-slate-50 dark:bg-slate-800 px-3 py-1.5 text-xs text-slate-500 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                        <span class="font-medium"><i class="fa-brands fa-markdown mr-1"></i> Markdown & LaTeX Editor</span>
+                        <div class="space-x-1 text-slate-400">
+                            <span>Inline <code class="bg-slate-200 dark:bg-slate-700 px-1 rounded">$...$</code> & Block <code class="bg-slate-200 dark:bg-slate-700 px-1 rounded">$$...$$</code></span>
+                        </div>
+                    </div>
+                    <textarea id="editor-textarea" readonly class="flex-1 w-full p-4 font-mono text-sm bg-transparent border-none focus:outline-none resize-none text-slate-800 dark:text-slate-100 leading-relaxed" placeholder="Log content..."></textarea>
+                </div>
+
+                <!-- Right: Rendered Output Pane -->
+                <div id="pane-preview" class="flex-1 flex flex-col h-full bg-white dark:bg-slate-900 overflow-hidden">
+                    <div class="bg-slate-50 dark:bg-slate-800 px-3 py-1.5 text-xs text-slate-500 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                        <span class="font-medium"><i class="fa-solid fa-eye mr-1"></i> Live Formatted View</span>
+                        <span class="text-emerald-500 font-semibold flex items-center text-[10px]"><i class="fa-solid fa-bolt mr-1"></i> Live KaTeX</span>
+                    </div>
+                    <div id="preview-container" class="flex-1 p-6 overflow-y-auto markdown-preview text-slate-800 dark:text-slate-100">
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Firebase Configuration Setup Modal -->
+    <div id="modal-config" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 w-full max-w-lg overflow-hidden flex flex-col">
+            <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800/80">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-sliders text-brand-500 text-lg"></i>
+                    <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">Firebase Setup</h3>
+                </div>
+                <button id="btn-close-config-modal" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg p-1">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 space-y-4 text-xs sm:text-sm">
+                <p class="text-slate-600 dark:text-slate-300">
+                    To connect to cloud sync and Firebase Authentication, paste your Firebase Project Web SDK Configuration below:
+                </p>
+
+                <div class="space-y-2">
+                    <label class="block text-xs font-semibold uppercase text-slate-500">Firebase Config JSON / JS Object</label>
+                    <textarea id="input-firebase-config" rows="6" class="w-full p-2.5 font-mono text-xs bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100" placeholder='{
+  "apiKey": "AIzaSy...",
+  "authDomain": "your-app.firebaseapp.com",
+  "projectId": "your-app",
+  "storageBucket": "your-app.appspot.com",
+  "messagingSenderId": "123456789",
+  "appId": "1:123456789:web:abcdef"
+}'></textarea>
+                </div>
+
+                <div class="p-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 rounded-lg text-amber-800 dark:text-amber-300 text-xs">
+                    <i class="fa-solid fa-circle-info mr-1"></i>
+                    <strong>No Firebase account yet?</strong> You can use <strong>Local Admin Mode</strong> to edit and write entries directly in your browser without any cloud setup!
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-2 pt-2">
+                    <button id="btn-save-firebase-config" class="flex-1 py-2 bg-brand-500 hover:bg-brand-600 text-white font-medium rounded-lg text-xs transition-colors">
+                        Save Firebase Config
+                    </button>
+                    <button id="btn-enable-local-admin" class="py-2 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg text-xs transition-colors">
+                        Enable Local Admin Mode
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login / Auth Modal -->
+    <div id="modal-auth" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 w-full max-w-md overflow-hidden flex flex-col">
+            <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800/80">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-user-lock text-brand-500 text-lg"></i>
+                    <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">Noel's Secure Login</h3>
+                </div>
+                <button id="btn-close-auth-modal" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg p-1">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <form id="form-login" class="p-6 space-y-4">
+                <!-- Explicit Ownership & Security Notice -->
+                <div class="p-3 bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900 rounded-lg text-xs text-indigo-900 dark:text-indigo-200 flex items-start space-x-2">
+                    <i class="fa-solid fa-shield-halved text-indigo-500 text-sm mt-0.5 shrink-0"></i>
+                    <div>
+                        <strong class="font-semibold block">Access Notice</strong>
+                        Public Access: Read-Only. ONLY <strong>imanuelrava790@gmail.com</strong> is authorized to log in as the owner/editor.
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Email</label>
+                    <input type="email" id="auth-email" required placeholder="imanuelrava790@gmail.com" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Password</label>
+                    <input type="password" id="auth-password" required placeholder="••••••••" class="w-full px-3 py-2 text-sm bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100">
+                </div>
+
+                <div id="auth-error" class="hidden text-xs text-rose-600 dark:text-rose-400 font-medium bg-rose-50 dark:bg-rose-950/40 p-2.5 rounded-lg border border-rose-200 dark:border-rose-900">
+                </div>
+
+                <button type="submit" id="btn-submit-auth" class="w-full py-2.5 bg-brand-500 hover:bg-brand-600 text-white font-medium text-sm rounded-lg shadow transition-colors flex justify-center items-center">
+                    <span>Log In as Owner</span>
+                </button>
+
+                <div class="text-center pt-2">
+                    <button type="button" id="btn-switch-local-mode" class="text-xs text-brand-600 dark:text-brand-400 hover:underline">
+                        Or click here to use Local Offline Admin Mode
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Activity Tracker Modal -->
+    <div id="modal-tracker" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800/80">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-fire text-amber-500 text-lg"></i>
+                    <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">Noel's Learning Activity Heatmap</h3>
+                </div>
+                <button id="btn-close-modal" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg p-1">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto space-y-6">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                    <div class="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 p-4 rounded-xl">
+                        <div class="text-xs font-medium text-amber-600 dark:text-amber-400 uppercase tracking-wider">Current Streak</div>
+                        <div class="text-3xl font-extrabold text-amber-600 dark:text-amber-400 mt-1" id="modal-streak-count">0 Days</div>
+                    </div>
+                    <div class="bg-brand-50 dark:bg-brand-950/30 border border-brand-200 dark:border-brand-800 p-4 rounded-xl">
+                        <div class="text-xs font-medium text-brand-600 dark:text-brand-400 uppercase tracking-wider">Total Notes</div>
+                        <div class="text-3xl font-extrabold text-brand-600 dark:text-brand-400 mt-1" id="modal-total-count">0</div>
+                    </div>
+                    <div class="bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800 p-4 rounded-xl">
+                        <div class="text-xs font-medium text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Active Days (Month)</div>
+                        <div class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 mt-1" id="modal-active-days">0</div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Activity Calendar (Last 28 Days)</h4>
+                    <div class="grid grid-cols-7 gap-1.5 sm:gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700" id="heatmap-grid">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="px-5 py-3 bg-slate-50 dark:bg-slate-800/80 border-t border-slate-200 dark:border-slate-700 text-right">
+                <button id="btn-close-modal-bottom" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 text-sm font-medium rounded-lg transition-colors">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-slate-800 text-white px-4 py-2.5 rounded-lg shadow-xl text-sm flex items-center space-x-2 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toast-message">Notification</span>
+    </div>
+
+    <!-- Application Module Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithCustomToken, signInAnonymously, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const OWNER_EMAIL = "imanuelrava790@gmail.com";
+
+        const DEFAULT_NOTES = [
+            {
+                id: 'note-1',
+                title: 'Quantum Mechanics & Schrödinger Equation',
+                category: 'Math & Physics',
+                date: new Date().toISOString().split('T')[0],
+                content: `# Quantum Physics Daily Log\n\nToday I reviewed the fundamental time-dependent Schrödinger Equation:\n\n$$i\\hbar \\frac{\\partial}{\\partial t}\\Psi(\\mathbf{r},t) = \\hat{H}\\Psi(\\mathbf{r},t)$$\n\nWhere the Hamiltonian operator $\\hat{H}$ is defined as:\n\n$$\\hat{H} = -\\frac{\\hbar^2}{2m}\\nabla^2 + V(\\mathbf{r},t)$$\n\n### Key Concepts\n- **Wave Function $\\Psi$**: Probabilistic description of quantum state.\n- **Planck Constant**: $\\hbar = \\frac{h}{2\\pi} \\approx 1.054 \\times 10^{-34} \\text{ J}\\cdot\\text{s}$.`
+            },
+            {
+                id: 'note-2',
+                title: 'Machine Learning: Loss Functions & Gradient Descent',
+                category: 'Learning Notes',
+                date: new Date(Date.now() - 86400000).toISOString().split('T')[0],
+                content: `# Neural Network Optimization\n\nLog on mean squared error loss function for linear models:\n\n$$\\mathcal{L}(\\theta) = \\frac{1}{2m} \\sum_{i=1}^{m} \\left( h_\\theta(x^{(i)}) - y^{(i)} \\right)^2$$\n\n### Parameter Update Rule:\n$$\\theta_j := \\theta_j - \\alpha \\frac{\\partial}{\\partial \\theta_j} \\mathcal{L}(\\theta)$$`
+            }
+        ];
+
+        class AppState {
+            constructor() {
+                this.notes = DEFAULT_NOTES;
+                this.activeNoteId = 'note-1';
+                this.activeCategoryFilter = 'All';
+                this.searchQuery = '';
+                this.viewMode = 'preview';
+                this.isAdmin = false;
+                this.isLocalAdmin = localStorage.getItem('noels_local_admin') === 'true';
+                this.user = null;
+                this.firebaseInitialized = false;
+            }
+
+            getActiveNote() {
+                return this.notes.find(n => n.id === this.activeNoteId) || this.notes[0] || null;
+            }
+        }
+
+        const state = new AppState();
+        let firebaseApp = null;
+        let auth = null;
+        let db = null;
+
+        const elements = {
+            sidebar: document.getElementById('sidebar'),
+            sidebarOverlay: document.getElementById('sidebar-overlay'),
+            toggleSidebarBtn: document.getElementById('toggle-sidebar'),
+            notesList: document.getElementById('notes-list'),
+            tagFilterContainer: document.getElementById('tag-filter-container'),
+            btnNewNote: document.getElementById('btn-new-note'),
+            inputSearch: document.getElementById('input-search'),
+            noteCountDisplay: document.getElementById('note-count-display'),
+            streakCounterBadge: document.getElementById('streak-counter-badge'),
+            
+            editTitle: document.getElementById('edit-title'),
+            editCategory: document.getElementById('edit-category'),
+            editDate: document.getElementById('edit-date'),
+            editorTextarea: document.getElementById('editor-textarea'),
+            previewContainer: document.getElementById('preview-container'),
+            
+            paneEditor: document.getElementById('pane-editor'),
+            panePreview: document.getElementById('pane-preview'),
+            viewModeSplit: document.getElementById('view-mode-split'),
+            viewModeEdit: document.getElementById('view-mode-edit'),
+            viewModePreview: document.getElementById('view-mode-preview'),
+            
+            badgeAuthStatus: document.getElementById('badge-auth-status'),
+            btnAuthToggle: document.getElementById('btn-auth-toggle'),
+            iconAuthBtn: document.getElementById('icon-auth-btn'),
+            textAuthBtn: document.getElementById('text-auth-btn'),
+            modalAuth: document.getElementById('modal-auth'),
+            btnCloseAuthModal: document.getElementById('btn-close-auth-modal'),
+            formLogin: document.getElementById('form-login'),
+            authEmail: document.getElementById('auth-email'),
+            authPassword: document.getElementById('auth-password'),
+            authError: document.getElementById('auth-error'),
+            btnSwitchLocalMode: document.getElementById('btn-switch-local-mode'),
+
+            btnOpenConfig: document.getElementById('btn-open-config'),
+            modalConfig: document.getElementById('modal-config'),
+            btnCloseConfigModal: document.getElementById('btn-close-config-modal'),
+            inputFirebaseConfig: document.getElementById('input-firebase-config'),
+            btnSaveFirebaseConfig: document.getElementById('btn-save-firebase-config'),
+            btnEnableLocalAdmin: document.getElementById('btn-enable-local-admin'),
+
+            btnCopyGithub: document.getElementById('btn-copy-github'),
+            btnDeleteNote: document.getElementById('btn-delete-note'),
+            btnThemeToggle: document.getElementById('btn-theme-toggle'),
+            btnDataMenu: document.getElementById('btn-data-menu'),
+            dataDropdown: document.getElementById('data-dropdown'),
+            btnExportJson: document.getElementById('btn-export-json'),
+            btnExportMd: document.getElementById('btn-export-md'),
+            
+            btnOpenTracker: document.getElementById('btn-open-tracker'),
+            modalTracker: document.getElementById('modal-tracker'),
+            btnCloseModal: document.getElementById('btn-close-modal'),
+            btnCloseModalBottom: document.getElementById('btn-close-modal-bottom'),
+            modalStreakCount: document.getElementById('modal-streak-count'),
+            modalTotalCount: document.getElementById('modal-total-count'),
+            modalActiveDays: document.getElementById('modal-active-days'),
+            heatmapGrid: document.getElementById('heatmap-grid'),
+            
+            toast: document.getElementById('toast'),
+            toastMessage: document.getElementById('toast-message')
+        };
+
+        // Initialize Firebase securely without uncaught error crashes
+        async function initFirebaseSafe() {
+            let config = null;
+
+            // Check stored config or global environment
+            const customConfigStr = localStorage.getItem('noels_firebase_config');
+            if (customConfigStr) {
+                try { config = JSON.parse(customConfigStr); } catch(e){}
+            } else if (typeof __firebase_config !== 'undefined') {
+                try { config = JSON.parse(__firebase_config); } catch(e){}
+            }
+
+            if (!config || !config.apiKey || config.apiKey === 'demo-key' || config.apiKey.includes('API_KEY')) {
+                console.warn("Firebase credentials not configured. Using offline fallback mode.");
+                state.firebaseInitialized = false;
+                state.notes = loadLocalNotes();
+                updateAuthUI();
+                renderSidebar();
+                loadActiveNoteIntoEditor();
+                return;
+            }
+
+            try {
+                firebaseApp = initializeApp(config);
+                auth = getAuth(firebaseApp);
+                db = getFirestore(firebaseApp);
+                state.firebaseInitialized = true;
+
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token).catch(() => {});
+                } else {
+                    await signInAnonymously(auth).catch(() => {});
+                }
+
+                onAuthStateChanged(auth, (user) => {
+                    state.user = user;
+                    state.isAdmin = state.isLocalAdmin || (user && !user.isAnonymous && user.email === OWNER_EMAIL);
+                    updateAuthUI();
+                    setupFirestoreSync();
+                });
+            } catch (err) {
+                console.warn("Firebase Auth Error: Falling back to local offline mode.", err.message);
+                state.firebaseInitialized = false;
+                state.notes = loadLocalNotes();
+                updateAuthUI();
+                renderSidebar();
+                loadActiveNoteIntoEditor();
+            }
+        }
+
+        function loadLocalNotes() {
+            const saved = localStorage.getItem('noels_life_notes');
+            if (saved) {
+                try { return JSON.parse(saved); } catch (e) { return DEFAULT_NOTES; }
+            }
+            return DEFAULT_NOTES;
+        }
+
+        function saveLocalNotes() {
+            localStorage.setItem('noels_life_notes', JSON.stringify(state.notes));
+        }
+
+        function setupFirestoreSync() {
+            if (!state.firebaseInitialized || !db || !auth.currentUser) {
+                state.notes = loadLocalNotes();
+                renderSidebar();
+                loadActiveNoteIntoEditor();
+                return;
+            }
+
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'noels-life-app';
+            const notesCol = collection(db, 'artifacts', appId, 'public', 'data', 'notes');
+
+            onSnapshot(notesCol, (snapshot) => {
+                if (!snapshot.empty) {
+                    const fetchedNotes = [];
+                    snapshot.forEach((docSnap) => {
+                        fetchedNotes.push({ id: docSnap.id, ...docSnap.data() });
+                    });
+                    state.notes = fetchedNotes.sort((a, b) => new Date(b.date) - new Date(a.date));
+                } else {
+                    state.notes = loadLocalNotes();
+                }
+
+                if (!state.activeNoteId || !state.notes.find(n => n.id === state.activeNoteId)) {
+                    state.activeNoteId = state.notes[0]?.id || null;
+                }
+
+                renderSidebar();
+                loadActiveNoteIntoEditor();
+            }, (error) => {
+                console.warn("Firestore sync fallback to LocalStorage:", error.message);
+                state.notes = loadLocalNotes();
+                renderSidebar();
+                loadActiveNoteIntoEditor();
+            });
+        }
+
+        function updateAuthUI() {
+            state.isAdmin = state.isLocalAdmin || (state.user && !state.user.isAnonymous && state.user.email === OWNER_EMAIL);
+
+            if (state.isAdmin) {
+                elements.badgeAuthStatus.className = "text-xs px-2.5 py-1 rounded-full font-medium flex items-center space-x-1 bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300";
+                elements.badgeAuthStatus.innerHTML = `<i class="fa-solid fa-user-check text-[10px]"></i><span>Noel (Owner Mode)</span>`;
+                
+                elements.textAuthBtn.innerText = "Logout";
+                elements.iconAuthBtn.className = "fa-solid fa-right-from-bracket";
+                elements.btnAuthToggle.className = "text-sm bg-slate-600 hover:bg-slate-700 text-white font-medium px-3 py-1.5 rounded-lg flex items-center space-x-1.5 transition-colors shadow-sm";
+
+                elements.btnNewNote.classList.remove('hidden');
+                elements.btnDeleteNote.classList.remove('hidden');
+                elements.editTitle.removeAttribute('readonly');
+                elements.editCategory.removeAttribute('disabled');
+                elements.editDate.removeAttribute('readonly');
+                elements.editorTextarea.removeAttribute('readonly');
+
+                setViewMode('split');
+            } else {
+                elements.badgeAuthStatus.className = "text-xs px-2.5 py-1 rounded-full font-medium flex items-center space-x-1 bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300";
+                elements.badgeAuthStatus.innerHTML = `<i class="fa-solid fa-eye text-[10px]"></i><span>Visitor Mode (Read-Only)</span>`;
+
+                elements.textAuthBtn.innerText = "Noel Login";
+                elements.iconAuthBtn.className = "fa-solid fa-right-to-bracket";
+                elements.btnAuthToggle.className = "text-sm bg-brand-500 hover:bg-brand-600 text-white font-medium px-3 py-1.5 rounded-lg flex items-center space-x-1.5 transition-colors shadow-sm";
+
+                elements.btnNewNote.classList.add('hidden');
+                elements.btnDeleteNote.classList.add('hidden');
+                elements.editTitle.setAttribute('readonly', 'true');
+                elements.editCategory.setAttribute('disabled', 'true');
+                elements.editDate.setAttribute('readonly', 'true');
+                elements.editorTextarea.setAttribute('readonly', 'true');
+
+                setViewMode('preview');
+            }
+        }
+
+        function renderSidebar() {
+            const categories = ['All', 'Learning Notes', 'Daily Life', 'Research', 'Study Logs', 'Math & Physics'];
+            
+            elements.tagFilterContainer.innerHTML = categories.map(cat => {
+                const isActive = state.activeCategoryFilter === cat;
+                return `
+                    <button onclick="window.setCategoryFilter('${cat}')" class="px-2.5 py-1 rounded-full whitespace-nowrap font-medium transition-colors ${
+                        isActive 
+                        ? 'bg-brand-500 text-white' 
+                        : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
+                    }">
+                        ${cat}
+                    </button>
+                `;
+            }).join('');
+
+            const filteredNotes = state.notes.filter(note => {
+                const matchesCategory = state.activeCategoryFilter === 'All' || note.category === state.activeCategoryFilter;
+                const matchesSearch = (note.title || '').toLowerCase().includes(state.searchQuery.toLowerCase()) || 
+                                      (note.content || '').toLowerCase().includes(state.searchQuery.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            elements.noteCountDisplay.innerText = `${filteredNotes.length} entries`;
+
+            if (filteredNotes.length === 0) {
+                elements.notesList.innerHTML = `<div class="p-4 text-center text-slate-400 text-xs">No entries found.</div>`;
+            } else {
+                elements.notesList.innerHTML = filteredNotes.map(note => {
+                    const isActive = note.id === state.activeNoteId;
+                    return `
+                        <div onclick="window.selectNote('${note.id}')" class="p-3 rounded-lg cursor-pointer transition-all ${
+                            isActive 
+                            ? 'bg-brand-50 dark:bg-brand-950/40 border border-brand-200 dark:border-brand-800/60' 
+                            : 'hover:bg-slate-100 dark:hover:bg-slate-700/50 border border-transparent'
+                        }">
+                            <div class="flex justify-between items-start">
+                                <h4 class="text-sm font-semibold text-slate-800 dark:text-slate-100 line-clamp-1">${escapeHtml(note.title || 'Untitled Entry')}</h4>
+                            </div>
+                            <div class="flex justify-between items-center mt-2 text-[11px] text-slate-400">
+                                <span class="bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-1.5 py-0.5 rounded font-medium">${note.category || 'General'}</span>
+                                <span>${note.date || ''}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            calculateStreak();
+        }
+
+        window.setCategoryFilter = (cat) => {
+            state.activeCategoryFilter = cat;
+            renderSidebar();
+        };
+
+        window.selectNote = (id) => {
+            state.activeNoteId = id;
+            loadActiveNoteIntoEditor();
+            renderSidebar();
+            elements.sidebar.classList.add('-translate-x-full');
+            elements.sidebarOverlay.classList.add('hidden');
+        };
+
+        function loadActiveNoteIntoEditor() {
+            const note = state.getActiveNote();
+            if (!note) {
+                elements.editTitle.value = '';
+                elements.editorTextarea.value = '';
+                elements.previewContainer.innerHTML = '';
+                return;
+            }
+
+            elements.editTitle.value = note.title || '';
+            elements.editCategory.value = note.category || 'Learning Notes';
+            elements.editDate.value = note.date || new Date().toISOString().split('T')[0];
+            elements.editorTextarea.value = note.content || '';
+
+            renderLivePreview();
+        }
+
+        function renderLivePreview() {
+            const markdownText = elements.editorTextarea.value;
+            let html = marked.parse(markdownText || '*No content available*');
+            elements.previewContainer.innerHTML = html;
+
+            try {
+                renderMathInElement(elements.previewContainer, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false},
+                        {left: '\\(', right: '\\)', display: false},
+                        {left: '\\[', right: '\\]', display: true}
+                    ],
+                    throwOnError: false
+                });
+            } catch (err) {
+                console.error("KaTeX render error:", err);
+            }
+        }
+
+        async function saveActiveNote() {
+            if (!state.isAdmin) return;
+            const note = state.getActiveNote();
+            if (!note) return;
+
+            note.title = elements.editTitle.value;
+            note.content = elements.editorTextarea.value;
+            note.category = elements.editCategory.value;
+            note.date = elements.editDate.value;
+
+            renderLivePreview();
+            renderSidebar();
+            saveLocalNotes();
+
+            if (state.firebaseInitialized && db && auth.currentUser) {
+                try {
+                    const appId = typeof __app_id !== 'undefined' ? __app_id : 'noels-life-app';
+                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'notes', note.id);
+                    await setDoc(docRef, {
+                        title: note.title,
+                        content: note.content,
+                        category: note.category,
+                        date: note.date
+                    }, { merge: true });
+                } catch (e) {
+                    console.warn("Firestore save error:", e);
+                }
+            }
+        }
+
+        elements.editorTextarea.addEventListener('input', saveActiveNote);
+        elements.editTitle.addEventListener('input', saveActiveNote);
+        elements.editCategory.addEventListener('change', saveActiveNote);
+        elements.editDate.addEventListener('change', saveActiveNote);
+
+        elements.inputSearch.addEventListener('input', (e) => {
+            state.searchQuery = e.target.value;
+            renderSidebar();
+        });
+
+        // Add Note
+        elements.btnNewNote.addEventListener('click', async () => {
+            if (!state.isAdmin) return;
+            const newId = 'note-' + Date.now();
+            const newNote = {
+                id: newId,
+                title: 'New Log Entry',
+                category: state.activeCategoryFilter !== 'All' ? state.activeCategoryFilter : 'Learning Notes',
+                date: new Date().toISOString().split('T')[0],
+                content: '# Daily Learning Log\n\nWrite learning notes and equations here using LaTeX syntax like $E = mc^2$.'
+            };
+
+            state.notes.unshift(newNote);
+            state.activeNoteId = newId;
+            saveLocalNotes();
+            renderSidebar();
+            loadActiveNoteIntoEditor();
+
+            if (state.firebaseInitialized && db) {
+                try {
+                    const appId = typeof __app_id !== 'undefined' ? __app_id : 'noels-life-app';
+                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'notes', newId);
+                    await setDoc(docRef, newNote);
+                    showToast('New entry synced to cloud!');
+                } catch (e) {
+                    showToast('Saved locally');
+                }
+            } else {
+                showToast('Entry created locally');
+            }
+        });
+
+        // Delete Note
+        elements.btnDeleteNote.addEventListener('click', async () => {
+            if (!state.isAdmin || !state.activeNoteId) return;
+            const note = state.getActiveNote();
+            if (confirm(`Delete "${note?.title}"?`)) {
+                const idToDelete = state.activeNoteId;
+                state.notes = state.notes.filter(n => n.id !== idToDelete);
+                state.activeNoteId = state.notes[0]?.id || null;
+                saveLocalNotes();
+                renderSidebar();
+                loadActiveNoteIntoEditor();
+
+                if (state.firebaseInitialized && db) {
+                    try {
+                        const appId = typeof __app_id !== 'undefined' ? __app_id : 'noels-life-app';
+                        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'notes', idToDelete);
+                        await deleteDoc(docRef);
+                        showToast('Entry deleted');
+                    } catch (e) {
+                        showToast('Deleted locally');
+                    }
+                } else {
+                    showToast('Deleted locally');
+                }
+            }
+        });
+
+        // Auth Trigger
+        elements.btnAuthToggle.addEventListener('click', async () => {
+            if (state.isAdmin) {
+                state.isLocalAdmin = false;
+                localStorage.removeItem('noels_local_admin');
+                if (state.firebaseInitialized && auth) {
+                    await signOut(auth).catch(() => {});
+                    await signInAnonymously(auth).catch(() => {});
+                }
+                updateAuthUI();
+                showToast('Logged out to Visitor Mode');
+            } else {
+                elements.authEmail.value = OWNER_EMAIL;
+                elements.authPassword.value = '';
+                elements.authError.classList.add('hidden');
+                elements.modalAuth.classList.remove('hidden');
+            }
+        });
+
+        elements.btnCloseAuthModal.addEventListener('click', () => {
+            elements.modalAuth.classList.add('hidden');
+        });
+
+        elements.formLogin.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = elements.authEmail.value.trim();
+            const password = elements.authPassword.value.trim();
+
+            // Client pre-check block
+            if (email.toLowerCase() !== OWNER_EMAIL.toLowerCase()) {
+                elements.authError.innerText = "Access Denied: Only imanuelrava790@gmail.com is authorized to edit this page.";
+                elements.authError.classList.remove('hidden');
+                return;
+            }
+
+            if (!state.firebaseInitialized) {
+                elements.authError.innerText = "Firebase credentials not active. Use 'Local Offline Admin Mode' below or click 'Firebase Setup' to configure.";
+                elements.authError.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                
+                // Security Guardrail: Immediately block and sign out any other user
+                if (!userCredential.user || userCredential.user.email?.toLowerCase() !== OWNER_EMAIL.toLowerCase()) {
+                    await signOut(auth).catch(() => {});
+                    await signInAnonymously(auth).catch(() => {});
+                    state.isAdmin = false;
+                    updateAuthUI();
+                    elements.authError.innerText = "Access Denied: Only imanuelrava790@gmail.com is authorized to edit this page.";
+                    elements.authError.classList.remove('hidden');
+                    return;
+                }
+
+                elements.modalAuth.classList.add('hidden');
+                showToast('Authenticated as Owner!');
+            } catch (err) {
+                elements.authError.innerText = err.message || "Invalid credentials.";
+                elements.authError.classList.remove('hidden');
+            }
+        });
+
+        // Offline / Local Admin Mode Fallback
+        function enableLocalAdmin() {
+            state.isLocalAdmin = true;
+            localStorage.setItem('noels_local_admin', 'true');
+            updateAuthUI();
+            elements.modalAuth.classList.add('hidden');
+            elements.modalConfig.classList.add('hidden');
+            showToast('Local Offline Admin Mode enabled!');
+        }
+
+        elements.btnSwitchLocalMode.addEventListener('click', enableLocalAdmin);
+        elements.btnEnableLocalAdmin.addEventListener('click', enableLocalAdmin);
+
+        // Firebase Config Modal Setup
+        elements.btnOpenConfig.addEventListener('click', () => {
+            const stored = localStorage.getItem('noels_firebase_config');
+            elements.inputFirebaseConfig.value = stored || '';
+            elements.modalConfig.classList.remove('hidden');
+        });
+
+        elements.btnCloseConfigModal.addEventListener('click', () => {
+            elements.modalConfig.classList.add('hidden');
+        });
+
+        elements.btnSaveFirebaseConfig.addEventListener('click', () => {
+            const rawVal = elements.inputFirebaseConfig.value.trim();
+            try {
+                const parsed = JSON.parse(rawVal);
+                if (!parsed.apiKey || !parsed.projectId) {
+                    throw new Error("Config must contain at least 'apiKey' and 'projectId'");
+                }
+                localStorage.setItem('noels_firebase_config', JSON.stringify(parsed));
+                showToast('Firebase configuration saved! Reloading...');
+                setTimeout(() => window.location.reload(), 1000);
+            } catch (err) {
+                alert("Invalid JSON format or missing required fields: " + err.message);
+            }
+        });
+
+        function setViewMode(mode) {
+            state.viewMode = mode;
+            elements.viewModeSplit.className = "px-2.5 py-1 rounded-md font-medium transition-colors text-slate-600 dark:text-slate-300 hover:text-slate-900";
+            elements.viewModeEdit.className = "px-2.5 py-1 rounded-md font-medium transition-colors text-slate-600 dark:text-slate-300 hover:text-slate-900";
+            elements.viewModePreview.className = "px-2.5 py-1 rounded-md font-medium transition-colors text-slate-600 dark:text-slate-300 hover:text-slate-900";
+
+            const activeClass = "px-2.5 py-1 rounded-md font-medium transition-colors bg-white dark:bg-slate-600 shadow-sm text-slate-800 dark:text-slate-100";
+
+            if (mode === 'split') {
+                elements.viewModeSplit.className = activeClass;
+                elements.paneEditor.classList.remove('hidden');
+                elements.panePreview.classList.remove('hidden');
+            } else if (mode === 'edit') {
+                elements.viewModeEdit.className = activeClass;
+                elements.paneEditor.classList.remove('hidden');
+                elements.panePreview.classList.add('hidden');
+            } else if (mode === 'preview') {
+                elements.viewModePreview.className = activeClass;
+                elements.paneEditor.classList.add('hidden');
+                elements.panePreview.classList.remove('hidden');
+            }
+        }
+
+        elements.viewModeSplit.addEventListener('click', () => setViewMode('split'));
+        elements.viewModeEdit.addEventListener('click', () => setViewMode('edit'));
+        elements.viewModePreview.addEventListener('click', () => setViewMode('preview'));
+
+        // Copy GitHub Markdown
+        elements.btnCopyGithub.addEventListener('click', () => {
+            const note = state.getActiveNote();
+            if (!note) return;
+
+            const text = `---
+title: "${note.title}"
+category: "${note.category}"
+date: "${note.date}"
+author: "Noel"
+---
+
+${note.content}`;
+
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            showToast('Copied GitHub-ready Markdown!');
+        });
+
+        // Data Sync Dropdown
+        elements.btnDataMenu.addEventListener('click', (e) => {
+            e.stopPropagation();
+            elements.dataDropdown.classList.toggle('hidden');
+        });
+        document.addEventListener('click', () => elements.dataDropdown.classList.add('hidden'));
+
+        elements.btnExportJson.addEventListener('click', () => {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state.notes, null, 2));
+            const anchor = document.createElement('a');
+            anchor.setAttribute("href", dataStr);
+            anchor.setAttribute("download", `noels_life_backup_${new Date().toISOString().split('T')[0]}.json`);
+            document.body.appendChild(anchor);
+            anchor.click();
+            anchor.remove();
+            showToast('Backup downloaded!');
+        });
+
+        elements.btnExportMd.addEventListener('click', () => {
+            const note = state.getActiveNote();
+            if (!note) return;
+            const blob = new Blob([note.content], { type: 'text/markdown;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${note.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}.md`;
+            link.click();
+            showToast('Markdown file exported!');
+        });
+
+        function calculateStreak() {
+            const datesWithNotes = new Set(state.notes.map(n => n.date));
+            let streak = 0;
+            let checkDate = new Date();
+
+            while (true) {
+                const dateStr = checkDate.toISOString().split('T')[0];
+                if (datesWithNotes.has(dateStr)) {
+                    streak++;
+                    checkDate.setDate(checkDate.getDate() - 1);
+                } else if (streak === 0) {
+                    checkDate.setDate(checkDate.getDate() - 1);
+                    const yesterdayStr = checkDate.toISOString().split('T')[0];
+                    if (datesWithNotes.has(yesterdayStr)) {
+                        streak++;
+                        checkDate.setDate(checkDate.getDate() - 1);
+                    } else {
+                        break;
+                    }
+                } else {
+                    break;
+                }
+            }
+
+            elements.streakCounterBadge.innerHTML = `🔥 ${streak} Days Streak`;
+            return streak;
+        }
+
+        function renderHeatmap() {
+            const datesWithNotes = new Set(state.notes.map(n => n.date));
+            const totalEntries = state.notes.length;
+            const streak = calculateStreak();
+
+            elements.modalStreakCount.innerText = `${streak} Days`;
+            elements.modalTotalCount.innerText = totalEntries;
+
+            let activeDaysCount = 0;
+            const today = new Date();
+            let gridHtml = '';
+
+            for (let i = 27; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(today.getDate() - i);
+                const dateStr = d.toISOString().split('T')[0];
+                const hasActivity = datesWithNotes.has(dateStr);
+
+                if (hasActivity) activeDaysCount++;
+
+                gridHtml += `
+                    <div class="flex flex-col items-center">
+                        <div title="${dateStr}" class="w-full aspect-square rounded-md flex items-center justify-center text-[10px] font-bold ${
+                            hasActivity 
+                            ? 'bg-brand-500 text-white shadow-sm' 
+                            : 'bg-slate-200 dark:bg-slate-800 text-slate-400'
+                        }">
+                            ${d.getDate()}
+                        </div>
+                    </div>
+                `;
+            }
+
+            elements.modalActiveDays.innerText = activeDaysCount;
+            elements.heatmapGrid.innerHTML = gridHtml;
+        }
+
+        elements.btnOpenTracker.addEventListener('click', () => {
+            renderHeatmap();
+            elements.modalTracker.classList.remove('hidden');
+        });
+
+        const closeModal = () => elements.modalTracker.classList.add('hidden');
+        elements.btnCloseModal.addEventListener('click', closeModal);
+        elements.btnCloseModalBottom.addEventListener('click', closeModal);
+
+        elements.toggleSidebarBtn.addEventListener('click', () => {
+            elements.sidebar.classList.remove('-translate-x-full');
+            elements.sidebarOverlay.classList.remove('hidden');
+        });
+        elements.sidebarOverlay.addEventListener('click', () => {
+            elements.sidebar.classList.add('-translate-x-full');
+            elements.sidebarOverlay.classList.add('hidden');
+        });
+
+        elements.btnThemeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        function showToast(msg) {
+            elements.toastMessage.innerText = msg;
+            elements.toast.classList.remove('translate-y-20', 'opacity-0');
+            elements.toast.classList.add('translate-y-0', 'opacity-100');
+            setTimeout(() => {
+                elements.toast.classList.remove('translate-y-0', 'opacity-100');
+                elements.toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2500);
+        }
+
+        function escapeHtml(str) {
+            return (str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+        }
+
+        window.onload = function() {
+            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            }
+            initFirebaseSafe();
+        };
+    </script>
+</body>
+</html>
