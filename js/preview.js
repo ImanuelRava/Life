@@ -27,7 +27,7 @@ App.preview = (function () {
         const pages = App.pagination.paginate(html, settings, settings.pageNumbers);
         wrapper.innerHTML = '';
         wrapper.appendChild(pages);
-        wrapper.style.zoom = settings.zoom || 1;
+        applyZoom();
 
         /* page count badge */
         const count = wrapper.querySelectorAll('.pdf-a4-page').length;
@@ -43,16 +43,85 @@ App.preview = (function () {
         if (badge) badge.textContent = dt + 'ms';
     }
 
-    function setZoom(z) {
-        z = Math.min(2, Math.max(0.4, Math.round(z * 100) / 100));
-        App.storage.updateSettings({ zoom: z });
+    /* ---- zoom engine ------------------------------------------------
+       Two modes:
+       - fit mode  (settings.zoomFit !== false): page is scaled to exactly
+         fill the preview pane width; recomputed on pane/window resize.
+       - manual mode (settings.zoomFit === false): fixed zoom steps via
+         the +/- buttons; value persisted in settings.zoom.
+       The last applied value lives in _appliedZoom and is mirrored into
+       settings.zoom so scrollToSection() keeps working in both modes.
+
+       MEASUREMENT RULE: page geometry is always measured in an UNZOOMED
+       state (wrapper zoom cleared + getBoundingClientRect). Reading
+       offsetWidth from inside a zoomed subtree returns the already-scaled
+       width on some engines, which turns fit-width into a runaway
+       feedback loop while the gutter divider is dragged. */
+    const ZOOM_MIN = 0.25, ZOOM_MAX = 3;
+    let _appliedZoom = 1;
+
+    /* settings.zoom persistence is debounced: refit() runs on every
+       animation frame during a gutter drag and updateSettings() writes
+       the whole state to localStorage synchronously — doing that per
+       frame stutters the drag. */
+    const persistZoom = App.utils.debounce(function () {
+        App.storage.updateSettings({ zoom: _appliedZoom });
+    }, 300);
+
+    function applyZoomValue(z) {
         const wrapper = $('#pdf-pages-wrapper');
-        if (wrapper) wrapper.style.zoom = z;
+        if (!wrapper) return;
+        _appliedZoom = z;
+        wrapper.style.zoom = z;
         const label = $('#zoom-level');
         if (label) label.textContent = Math.round(z * 100) + '%';
     }
 
-    function getZoom() { return App.storage.getSettings().zoom || 1; }
+    function fitZoomValue() {
+        const scroller = $('#preview-scroll');
+        const wrapper = $('#pdf-pages-wrapper');
+        if (!scroller || !wrapper) return 1;
+        const page = wrapper.querySelector('.pdf-a4-page');
+        if (!page) return 1;
+        /* measure in unzoomed space: clear zoom, read visual width, restore */
+        const prevZoom = wrapper.style.zoom;
+        wrapper.style.zoom = '';
+        const pageW = page.getBoundingClientRect().width; /* 210mm ≈ 793.7px */
+        wrapper.style.zoom = prevZoom;
+        const avail = scroller.clientWidth - 28;         /* breathing gap */
+        if (avail <= 40 || !pageW) return 1;
+        return Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, avail / pageW));
+    }
+
+    function isFitMode() { return App.storage.getSettings().zoomFit !== false; }
+
+    function applyZoom() {
+        const s = App.storage.getSettings();
+        const z = (s.zoomFit !== false) ? fitZoomValue() : (s.zoom || 1);
+        applyZoomValue(z);
+        persistZoom();
+    }
+
+    function setZoom(z) {
+        z = Math.min(2, Math.max(0.4, Math.round(z * 100) / 100));
+        App.storage.updateSettings({ zoom: z, zoomFit: false });
+        applyZoomValue(z);
+    }
+
+    function setFit() {
+        App.storage.updateSettings({ zoomFit: true });
+        applyZoom();
+    }
+
+    function getZoom() { return _appliedZoom || App.storage.getSettings().zoom || 1; }
+
+    /* keep fit-width correct when the window changes size */
+    let _resizeTimer = null;
+    window.addEventListener('resize', function () {
+        if (!isFitMode()) return;
+        clearTimeout(_resizeTimer);
+        _resizeTimer = setTimeout(applyZoom, 120);
+    });
 
     function scrollToSection(id) {
         const wrapper = $('#pdf-pages-wrapper');
@@ -62,7 +131,9 @@ App.preview = (function () {
         const scroller = $('#preview-scroll');
         const pageEl = target.closest('.pdf-a4-page');
         if (scroller && pageEl) {
-            scroller.scrollTop = pageEl.offsetTop * (App.storage.getSettings().zoom || 1) - 24;
+            /* viewport-space delta scroll — immune to zoom/transform math */
+            const top = pageEl.getBoundingClientRect().top - scroller.getBoundingClientRect().top;
+            scroller.scrollTop += top - 24;
         }
     }
 
@@ -111,14 +182,14 @@ App.preview = (function () {
             });
         }
 
-        /* zoom buttons */
+        /* zoom buttons (in/out step from the currently applied zoom) */
         const zin = $('#zoom-in-btn'), zout = $('#zoom-out-btn'), zfit = $('#zoom-fit-btn');
         if (zin) zin.addEventListener('click', function () { setZoom(getZoom() + 0.1); });
         if (zout) zout.addEventListener('click', function () { setZoom(getZoom() - 0.1); });
-        if (zfit) zfit.addEventListener('click', function () { setZoom(1); });
+        if (zfit) zfit.addEventListener('click', setFit);
         const label = $('#zoom-level');
         if (label) label.textContent = Math.round(getZoom() * 100) + '%';
     }
 
-    return { compile: compile, setZoom: setZoom, scrollToSection: scrollToSection, initControls: initControls };
+    return { compile: compile, setZoom: setZoom, setFit: setFit, refit: applyZoom, scrollToSection: scrollToSection, initControls: initControls };
 })();

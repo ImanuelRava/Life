@@ -60,24 +60,47 @@ window.App = window.App || {};
         if (!divider || !pane || !main) return;
 
         let dragging = false;
+        let gutterRAF = 0;
+        /* drag-frame geometry cached at mousedown. The editor pane's
+           width:% resolves against the FULL flex row (sidebar included),
+           so the percentage must be computed from the row width minus the
+           left rail — using the raw clientX/row ratio makes the divider
+           jump sideways on the first mousemove instead of staying under
+           the cursor. */
+        let drag = null;
+
         divider.addEventListener('mousedown', function (ev) {
             dragging = true;
             divider.classList.add('dragging');
+            const mainRect = main.getBoundingClientRect();
+            drag = {
+                rowW: mainRect.width,
+                railW: pane.getBoundingClientRect().left - mainRect.left,
+                grabDx: ev.clientX - divider.getBoundingClientRect().left
+            };
             ev.preventDefault();
         });
         window.addEventListener('mousemove', function (ev) {
-            if (!dragging) return;
-            const rect = main.getBoundingClientRect();
-            const pct = Math.min(85, Math.max(15, ((ev.clientX - rect.left) / rect.width) * 100));
+            if (!dragging || !drag) return;
+            const editorPx = ev.clientX - drag.grabDx - drag.railW;
+            const pct = Math.min(85, Math.max(15, (editorPx / drag.rowW) * 100));
             pane.style.width = pct + '%';
+            /* keep fit-width zoom live while the preview pane resizes */
+            if (App.preview && App.preview.refit && !gutterRAF) {
+                gutterRAF = requestAnimationFrame(function () {
+                    gutterRAF = 0;
+                    App.preview.refit();
+                });
+            }
         });
         window.addEventListener('mouseup', function () {
             if (!dragging) return;
             dragging = false;
+            drag = null;
             divider.classList.remove('dragging');
-            const rect = main.getBoundingClientRect();
-            const pct = Math.min(85, Math.max(15, (pane.getBoundingClientRect().width / rect.width) * 100));
+            const pct = Math.min(85, Math.max(15, (pane.getBoundingClientRect().width / main.getBoundingClientRect().width) * 100));
             App.storage.updateSettings({ editorWidthPct: pct });
+            if (App.preview && App.preview.refit) App.preview.refit();
         });
     }
 

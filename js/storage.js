@@ -13,6 +13,7 @@ App.storage = (function () {
         return {
             theme: 'dark',
             zoom: 1,
+            zoomFit: true,         // true = auto fit page width (recomputed on resize)
             autoCompile: true,
             margins: 'default',     // default | narrow | moderate | wide
             columns: '1',           // 1 | 2
