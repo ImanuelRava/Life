@@ -1,0 +1,128 @@
+/* ============================================================
+   templates.js — document templates shown in the Templates popover
+   ============================================================ */
+window.App = window.App || {};
+
+App.TEMPLATES = [
+    {
+        icon: 'file-text',
+        title: 'Minimal Starter',
+        desc: 'Title, abstract, TOC, two sections, one equation',
+        source: [
+            '\\documentclass{article}',
+            '\\usepackage{amsmath}',
+            '\\usepackage{amsthm}',
+            '\\title{Article Notes}',
+            '\\author{Author Name}',
+            '\\date{\\today}',
+            '',
+            '\\begin{document}',
+            '',
+            '\\maketitle',
+            '',
+            '\\begin{abstract}',
+            'This starter document shows the basic building blocks of the studio:',
+            'a title block, an abstract, a table of contents, numbered sections,',
+            'and a numbered equation. Replace the text with your own notes.',
+            '\\end{abstract}',
+            '',
+            '\\tableofcontents',
+            '',
+            '\\section{Introduction}',
+            '',
+            'Write your opening paragraph here. Inline math such as $a^2 + b^2 = c^2$',
+            'is rendered with KaTeX. Paragraphs are separated by a blank line, just',
+            'like in real LaTeX.',
+            '',
+            '\\section{Main Result}',
+            '',
+            'The Pythagorean identity is',
+            '\\begin{equation}',
+            '  a^2 + b^2 = c^2',
+            '\\end{equation}',
+            '',
+            '\\end{document}'
+        ].join('\n')
+    },
+    {
+        icon: 'file',
+        title: 'Blank Article',
+        desc: 'Empty article skeleton — just the title block',
+        source: [
+            '\\documentclass{article}',
+            '\\title{Untitled}',
+            '\\author{Author Name}',
+            '\\date{\\today}',
+            '',
+            '\\begin{document}',
+            '',
+            '\\maketitle',
+            '',
+            '\\section{Introduction}',
+            '',
+            '',
+            '\\end{document}'
+        ].join('\n')
+    },
+    {
+        icon: 'book-open',
+        title: 'Theorem Notes',
+        desc: 'Definitions, theorems, and a proof with QED',
+        source: [
+            '\\documentclass{article}',
+            '\\usepackage{amsmath}',
+            '\\usepackage{amsthm}',
+            '\\title{Theorem Notes}',
+            '\\author{Author Name}',
+            '\\date{\\today}',
+            '',
+            '\\begin{document}',
+            '',
+            '\\maketitle',
+            '',
+            '\\begin{definition}[Group]',
+            'A group is a set $G$ with an associative binary operation,',
+            'an identity element, and inverses for every element.',
+            '\\end{definition}',
+            '',
+            '\\begin{theorem}[Uniqueness of the identity]',
+            'The identity element of a group is unique.',
+            '\\end{theorem}',
+            '',
+            '\\begin{proof}',
+            'Suppose $e$ and $e\'$ are both identities. Then $e = e * e\' = e\'$.',
+            '\\end{proof}',
+            '',
+            '\\end{document}'
+        ].join('\n')
+    },
+    {
+        icon: 'list-ordered',
+        title: 'Problem Set',
+        desc: 'Numbered problems with hints and display math',
+        source: [
+            '\\documentclass{article}',
+            '\\usepackage{amsmath}',
+            '\\title{Problem Set 1}',
+            '\\author{Course Name}',
+            '\\date{\\today}',
+            '',
+            '\\begin{document}',
+            '',
+            '\\maketitle',
+            '',
+            '\\begin{enumerate}',
+            '  \\item Evaluate the following integral:',
+            '  \\[',
+            '    \\int_{0}^{1} x^2 \\, dx',
+            '  \\]',
+            '  \\item Solve for $x$:',
+            '  \\[',
+            '    2^x = 32',
+            '  \\]',
+            '\\end{enumerate}',
+            '',
+            '\\end{document}'
+        ].join('\n')
+    }
+];

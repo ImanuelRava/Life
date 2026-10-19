@@ -1,0 +1,144 @@
+/* ============================================================
+   ribbon.css — Office-style ribbon: tabs, tool buttons, search,
+   selects, checkboxes, color dots, templates popover
+   (Extracted verbatim from the original single-file index.html)
+   ============================================================ */
+
+/* Office Ribbon Tab styling */
+.ribbon-tab-btn {
+    position: relative; padding: 0.5rem 0.85rem; font-weight: 500; font-size: 0.75rem;
+    color: #94a3b8; transition: all 0.15s ease; border-bottom: 2px solid transparent;
+}
+.ribbon-tab-btn:hover { color: #f1f5f9; }
+.ribbon-tab-btn.active {
+    color: #10b981; border-bottom-color: #10b981; background-color: rgba(15, 23, 42, 0.6);
+}
+
+/* Ribbon Tool Item */
+.ribbon-tool-btn {
+    display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 0.4rem 0.6rem; border-radius: 0.375rem;
+    background-color: rgba(30, 41, 59, 0.5); border: 1px solid rgba(51, 65, 85, 0.6);
+    color: #e2e8f0; transition: all 0.15s ease; min-width: 3.25rem; height: 3rem;
+}
+.ribbon-tool-btn:hover {
+    background-color: #334155; border-color: #10b981; color: #ffffff; transform: translateY(-1px);
+}
+
+/* Ribbon panel: wrap into multiple rows instead of one long horizontal scroll */
+.ribbon-tab-panel {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    align-content: flex-start;
+    gap: 0.5rem;
+    row-gap: 0.75rem;
+}
+.ribbon-section {
+    display: flex; flex-direction: column; border-right: 1px solid #1e293b; padding-right: 0.75rem; margin-right: 0.25rem;
+}
+.ribbon-section:last-child { border-right: none; padding-right: 0; margin-right: 0; }
+.ribbon-section .ribbon-section-title {
+    font-size: 10px; color: #64748b; font-family: Inter, system-ui, sans-serif;
+    text-transform: uppercase; font-weight: 600; margin-bottom: 0.25rem;
+}
+.ribbon-section .ribbon-section-buttons {
+    display: flex; flex-wrap: wrap; gap: 0.375rem; align-items: center;
+}
+
+/* Search box in ribbon */
+.ribbon-search-wrap {
+    display: flex; align-items: center; gap: 0.4rem;
+    background: #0b0f19; border: 1px solid #1e293b; border-radius: 0.375rem;
+    padding: 0.3rem 0.5rem; min-width: 14rem;
+}
+.ribbon-search-wrap:focus-within { border-color: #10b981; }
+.ribbon-search-wrap input {
+    background: transparent; border: none; outline: none; color: #e2e8f0;
+    font-size: 12px; flex: 1; font-family: Inter, system-ui, sans-serif;
+}
+.ribbon-search-wrap input::placeholder { color: #475569; }
+
+/* Search results panel — appears above tabs when searching */
+#tab-search-results {
+    display: none;
+    flex-wrap: wrap; align-items: flex-start; align-content: flex-start;
+    gap: 0.5rem; row-gap: 0.75rem;
+}
+#tab-search-results.active { display: flex; }
+.search-no-results {
+    color: #64748b; font-size: 12px; padding: 1rem; font-style: italic;
+}
+
+/* ===== Ribbon: selects, checkboxes, color dots ===== */
+.ribbon-select {
+    background: #0b0f19; border: 1px solid #1e293b; color: #e2e8f0;
+    font-size: 11px; border-radius: 6px; padding: 0.32rem 0.45rem;
+    outline: none; cursor: pointer; font-family: Inter, system-ui, sans-serif;
+    max-width: 9.5rem;
+}
+.ribbon-select:focus { border-color: #10b981; }
+.ribbon-select option { background: #0f172a; color: #e2e8f0; }
+.ribbon-check {
+    display: inline-flex; align-items: center; gap: 0.4rem; font-size: 11px;
+    color: #cbd5e1; cursor: pointer; user-select: none;
+    background: rgba(30,41,59,0.5); border: 1px solid rgba(51,65,85,0.6);
+    border-radius: 0.375rem; padding: 0.45rem 0.6rem; height: 3rem; min-width: 3.25rem;
+    flex-direction: column; justify-content: center;
+}
+.ribbon-check input { accent-color: #10b981; width: 13px; height: 13px; }
+
+/* ===== Page Layout tab: aligned form-card groups =====
+   One card per group; rows are label-left / control-right on a shared
+   grid so every control lines up instead of floating in separate boxes. */
+.ribbon-section-form { min-width: 13.5rem; }
+.ribbon-form {
+    display: flex; flex-direction: column; gap: 0.4rem;
+    background: rgba(15, 23, 42, 0.45);
+    border: 1px solid #1e293b; border-radius: 0.5rem;
+    padding: 0.55rem 0.65rem;
+    flex: 1; /* cards stretch to equal height inside the tab panel */
+}
+.ribbon-form-row { display: flex; align-items: center; gap: 0.5rem; }
+.ribbon-form-label {
+    font-size: 11px; color: #94a3b8; font-family: Inter, system-ui, sans-serif;
+    flex: 0 0 4.4rem; white-space: nowrap;
+}
+.ribbon-form .ribbon-select { flex: 1 1 auto; width: 100%; max-width: none; }
+.ribbon-form-btn {
+    display: flex; align-items: center; justify-content: center; gap: 0.45rem;
+    height: 1.85rem; border-radius: 6px; font-size: 11px; cursor: pointer;
+    background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(51, 65, 85, 0.6);
+    color: #e2e8f0; transition: all 0.15s ease; font-family: Inter, system-ui, sans-serif;
+}
+.ribbon-form-btn:hover { background: #334155; border-color: #10b981; color: #ffffff; }
+.ribbon-form-checkrow {
+    display: flex; align-items: center; gap: 0.5rem; min-height: 1.85rem;
+    font-size: 11px; color: #cbd5e1; cursor: pointer; user-select: none;
+    font-family: Inter, system-ui, sans-serif;
+}
+.ribbon-form-checkrow input { accent-color: #10b981; width: 13px; height: 13px; margin: 0; }
+.ribbon-color-dot {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 2px solid rgba(148,163,184,0.35); cursor: pointer;
+    transition: transform 0.1s ease, border-color 0.1s ease;
+}
+.ribbon-color-dot:hover { transform: scale(1.18); border-color: #e2e8f0; }
+.ribbon-color-dot.dot-active { border-color: #10b981; }
+
+/* ===== Templates menu popover ===== */
+.menu-popover {
+    position: absolute; z-index: 60; background: #0f172a;
+    border: 1px solid #1e293b; border-radius: 0.6rem;
+    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.65);
+    min-width: 220px; overflow: hidden; display: none; padding-bottom: 4px;
+}
+.menu-popover.open { display: block; }
+.menu-popover .menu-item {
+    display: flex; gap: 0.6rem; align-items: flex-start;
+    padding: 0.5rem 0.8rem; cursor: pointer; font-size: 12px; color: #e2e8f0;
+    transition: background 0.1s;
+}
+.menu-popover .menu-item:hover { background: rgba(51,65,85,0.55); }
+.menu-popover .menu-item i, .menu-popover .menu-item svg { width: 15px; height: 15px; margin-top: 2px; color: #34d399; flex-shrink: 0; }
+.menu-popover .mi-title { font-weight: 600; color: #f1f5f9; }
+.menu-popover .mi-desc { font-size: 10px; color: #64748b; margin-top: 1px; }

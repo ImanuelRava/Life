@@ -1,0 +1,393 @@
+/* ============================================================
+   preview.css — A4 pages + authentic LaTeX article typography
+   (Extracted verbatim from the original single-file index.html)
+   ============================================================ */
+
+/* Document Preview A4 Academic PDF Canvas */
+.pdf-a4-page {
+    background: #ffffff;
+    color: #0f172a;
+    box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.4), 0 10px 15px -5px rgba(0, 0, 0, 0.2);
+    width: 210mm;
+    min-height: 297mm;
+    padding: 28mm 24mm;
+    margin: 0 auto 2rem;
+    position: relative;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+.pdf-a4-page:last-child { margin-bottom: 0; }
+.dark .pdf-a4-page { background: #ffffff; color: #0f172a; }
+
+/* Multi-page preview wrapper — holds all .pdf-a4-page elements, scaled by zoom.
+   Uses CSS `zoom` (not transform) so layout/scroll size adjusts correctly. */
+#pdf-pages-wrapper {
+    padding: 2rem 0;
+}
+
+/* Page break marker — never rendered visually; used only as a pagination signal */
+.page-break { display: none; }
+
+/* ===================================================================
+   amsthm-STYLE ENVIRONMENTS — authentic LaTeX theorem rendering.
+   No boxes, no borders, no backgrounds. Just bold inline label +
+   italic body (for theorem-like) + auto-numbering + QED for proofs.
+   This is what \newtheorem{theorem}{Theorem} produces in real LaTeX.
+   =================================================================== */
+.latex-env {
+    margin: 0.8em 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    text-indent: 0;
+}
+.latex-env-name {
+    font-weight: 700;
+    font-style: normal;
+    color: #000;
+}
+.latex-env-opt {
+    font-weight: 400;
+    font-style: normal;
+    color: #000;
+}
+/* Theorem-like: entire env is italic (label overrides to upright bold) */
+.latex-theorem, .latex-lemma, .latex-corollary, .latex-proposition {
+    font-style: italic;
+}
+.latex-theorem .latex-env-name,
+.latex-lemma .latex-env-name,
+.latex-corollary .latex-env-name,
+.latex-proposition .latex-env-name {
+    font-style: normal;
+}
+/* Definition-like: upright body */
+.latex-definition, .latex-example, .latex-note, .latex-remark, .latex-axiom {
+    font-style: normal;
+}
+/* Proof: italic "Proof." label, upright body, QED at end */
+.latex-proof { font-style: normal; }
+.latex-proof .latex-env-name { font-style: italic; }
+.latex-proof .latex-qed { margin-left: 0.3em; }
+/* KaTeX display math inside italic envs: keep math upright */
+.latex-env .katex { font-style: normal; }
+
+/* ===================================================================
+   LaTeX ARTICLE TYPOGRAPHY — make the preview look like a real pdfLaTeX
+   article-class document, not generic HTML serif.
+   =================================================================== */
+.latex-document {
+    font-family: 'Latin Modern', Georgia, serif;
+    font-size: 11pt;
+    line-height: 1.5;           /* \baselinestretch ~1.0 but visually ~1.5 */
+    color: #000;                /* LaTeX body is pure black, not slate-900 */
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    font-feature-settings: "kern" 1, "liga" 1;
+}
+.latex-document p { margin: 0 0 0.6em 0; text-indent: 1.2em; }
+.latex-document p:first-child,
+.latex-document p:first-of-type { text-indent: 0; }
+.latex-document p.latex-paragraph { text-indent: 0; font-weight: 700; margin: 1em 0 0.4em 0; }
+
+/* Title block (from \maketitle) — centered, no border, LaTeX-style */
+.latex-document .latex-title-block {
+    text-align: center;
+    margin: 0 0 2em 0;
+    padding: 0;
+    border: none;
+}
+.latex-document .latex-title-block h1 {
+    font-family: 'Latin Modern', Georgia, serif;
+    font-size: 1.6em;            /* LaTeX \LARGE */
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 0.4em 0;
+    color: #000;
+    letter-spacing: 0;
+    text-align: center;
+}
+.latex-document .latex-author {
+    font-family: 'Latin Modern', Georgia, serif;
+    font-size: 0.95em;
+    font-weight: 400;
+    text-align: center;
+    text-indent: 0;
+    margin: 0.15em 0;
+    color: #000;
+}
+.latex-document .latex-date {
+    font-family: 'Latin Modern', Georgia, serif;
+    font-size: 0.9em;
+    font-weight: 400;
+    text-align: center;
+    text-indent: 0;
+    margin: 0.15em 0;
+    color: #000;
+}
+
+/* Section headings (LaTeX \section/\subsection/\subsubsection) */
+.latex-document h2 {
+    font-family: 'Latin Modern', Georgia, serif;
+    font-size: 1.3em;            /* \Large */
+    font-weight: 700;
+    line-height: 1.3;
+    margin: 1.4em 0 0.6em 0;
+    padding: 0;
+    border: none;
+    color: #000;
+    text-align: left;
+}
+.latex-document h3 {
+    font-family: 'Latin Modern', Georgia, serif;
+    font-size: 1.1em;            /* \large */
+    font-weight: 700;
+    margin: 1.2em 0 0.5em 0;
+    color: #000;
+}
+.latex-document h4 {
+    font-family: 'Latin Modern', Georgia, serif;
+    font-size: 1em;
+    font-weight: 700;
+    margin: 1em 0 0.4em 0;
+    color: #000;
+}
+
+/* Lists — LaTeX compact spacing, tight markers */
+.latex-document ul.latex-itemize,
+.latex-document ol.latex-enumerate {
+    margin: 0.4em 0 0.7em 0;
+    padding-left: 2em;
+    list-style-position: outside;
+}
+.latex-document ul.latex-itemize { list-style-type: disc; }
+.latex-document ol.latex-enumerate { list-style-type: decimal; }
+.latex-document li { margin: 0.15em 0; text-indent: 0; text-align: left; }
+.latex-document li::marker { font-family: 'Latin Modern', Georgia, serif; }
+
+/* Tables — authentic LaTeX booktabs/tabular look (no default HTML borders) */
+.latex-document table.latex-tabular {
+    border-collapse: collapse;
+    margin: 0.8em auto;
+    font-family: 'Latin Modern', Georgia, serif;
+    font-size: 11pt;
+    color: #000;
+    text-indent: 0;
+}
+.latex-document table.latex-tabular td,
+.latex-document table.latex-tabular th {
+    padding: 0.35em 0.8em;
+    text-align: center;
+    vertical-align: middle;
+    border: none;
+}
+/* Column alignment from LaTeX spec (l/c/r) */
+.latex-document table.latex-tabular td.align-l, .latex-document table.latex-tabular th.align-l { text-align: left; }
+.latex-document table.latex-tabular td.align-r, .latex-document table.latex-tabular th.align-r { text-align: right; }
+/* \hline → full-width horizontal rule */
+.latex-document table.latex-tabular tr.hline td,
+.latex-document table.latex-tabular tr.hline th {
+    border-top: 0.8px solid #000;
+    padding: 0;
+    height: 0;
+    line-height: 0;
+}
+.latex-document table.latex-tabular tr.hline-bottom td,
+.latex-document table.latex-tabular tr.hline-bottom th {
+    border-bottom: 0.8px solid #000;
+}
+/* \cline{x-y} → partial horizontal rule (emulated via border on specific cells) */
+.latex-document table.latex-tabular td.cline-top,
+.latex-document table.latex-tabular th.cline-top { border-top: 0.8px solid #000; }
+/* Vertical bars in column spec (|c|c|) → left/right cell borders */
+.latex-document table.latex-tabular td.bar-left,
+.latex-document table.latex-tabular th.bar-left { border-left: 0.8px solid #000; }
+.latex-document table.latex-tabular td.bar-right,
+.latex-document table.latex-tabular th.bar-right { border-right: 0.8px solid #000; }
+/* \toprule / \midrule / \bottomrule (booktabs) — thicker rules */
+.latex-document table.latex-tabular tr.toprule td { border-top: 1.5px solid #000; }
+.latex-document table.latex-tabular tr.midrule td { border-top: 1px solid #000; }
+.latex-document table.latex-tabular tr.bottomrule td { border-bottom: 1.5px solid #000; }
+/* Table caption — "Table N: text" centered below the table */
+.latex-document .latex-table-caption {
+    text-align: center;
+    font-family: 'Latin Modern', Georgia, serif;
+    font-size: 0.9em;
+    margin: 0.3em 0 1em 0;
+    text-indent: 0;
+    color: #000;
+}
+.latex-document .latex-table-caption-label {
+    font-weight: 700;
+}
+
+/* Abstract block — match LaTeX \begin{abstract} (smaller, centered title, indented body) */
+.latex-document .latex-abstract {
+    margin: 1.5em auto;
+    padding: 0;
+    border: none;
+    background: transparent;
+    text-align: justify;
+}
+.latex-document .latex-abstract-title {
+    font-family: 'Latin Modern', Georgia, serif;
+    font-size: 0.9em;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 0.5em;
+    text-indent: 0;
+    letter-spacing: 0;
+}
+.latex-document .latex-abstract-body {
+    font-family: 'Latin Modern', Georgia, serif;
+    font-size: 0.92em;
+    line-height: 1.4;
+    text-indent: 1.2em;
+    color: #000;
+    font-style: italic;
+}
+
+/* Strong / emphasis / inline code */
+.latex-document strong { font-weight: 700; }
+.latex-document em { font-style: italic; }
+.latex-document code {
+    font-family: 'Latin Modern Mono', 'Fira Code', monospace;
+    font-size: 0.9em;
+    background: transparent;
+    color: #000;
+    padding: 0;
+    border-radius: 0;
+}
+
+/* Display math — LaTeX centers display equations */
+.latex-document .latex-displaymath {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.8em 0;
+    overflow-x: auto;
+    /* KaTeX subscripts (log₂) dip ~3px below the strut; give them room
+       and never show a vertical scrollbar (overflow-x:auto would force
+       overflow-y:auto and paint ▲▼ arrows next to every equation). */
+    overflow-y: hidden;
+    padding: 4px 0;
+}
+.latex-document .latex-displaymath .katex-display {
+    margin: 0;
+}
+.latex-document .katex { font-size: 1.05em; }
+
+/* amsthm environments — authentic LaTeX style */
+.latex-document .latex-env {
+    margin: 0.8em 0; padding: 0; border: none; background: transparent;
+    text-indent: 0; break-inside: avoid;
+}
+.latex-document .latex-env-name { font-weight: 700; font-style: normal; color: #000; }
+.latex-document .latex-env-opt { font-weight: 400; font-style: normal; color: #000; }
+.latex-document .latex-theorem, .latex-document .latex-lemma,
+.latex-document .latex-corollary, .latex-document .latex-proposition { font-style: italic; }
+.latex-document .latex-theorem .latex-env-name, .latex-document .latex-lemma .latex-env-name,
+.latex-document .latex-corollary .latex-env-name, .latex-document .latex-proposition .latex-env-name { font-style: normal; }
+.latex-document .latex-definition, .latex-document .latex-example,
+.latex-document .latex-note, .latex-document .latex-remark,
+.latex-document .latex-axiom { font-style: normal; }
+.latex-document .latex-proof { font-style: normal; }
+.latex-document .latex-proof .latex-env-name { font-style: italic; }
+.latex-document .latex-proof .latex-qed { margin-left: 0.3em; }
+.latex-document .latex-env .katex { font-style: normal; }
+
+/* ===================================================================
+   v2 ADDITIONS — new elements, Word-like features, light theme
+   =================================================================== */
+
+/* Preview pages: allow text selection (body has select-none) */
+.pdf-a4-page { user-select: text; cursor: text; }
+
+/* Page number footer on preview pages */
+.latex-page-number {
+    position: absolute; bottom: 8mm; left: 0; right: 0;
+    text-align: center; font-family: 'Latin Modern', Georgia, serif;
+    font-size: 10pt; color: #000; text-indent: 0;
+}
+
+/* Section numbers (auto-numbering) */
+.latex-document .sec-num { font-family: 'Latin Modern', Georgia, serif; }
+
+/* Table of Contents (Word-like) */
+.latex-document .latex-toc { margin: 1.2em 0 1.6em 0; text-indent: 0; break-inside: avoid; }
+.latex-document .latex-toc-title {
+    text-align: center; font-weight: 700; font-size: 1.15em;
+    margin-bottom: 0.9em; text-indent: 0; color: #000;
+}
+.latex-document .latex-toc-row { display: flex; align-items: baseline; margin: 0.28em 0; text-indent: 0; }
+.latex-document .latex-toc-row.lvl2 { padding-left: 1.6em; }
+.latex-document .latex-toc-row.lvl3 { padding-left: 3.2em; font-size: 0.95em; }
+.latex-document .latex-toc-label { white-space: nowrap; color: #000; }
+.latex-document .latex-toc-label .toc-num { margin-right: 0.6em; }
+.latex-document .latex-toc-dots {
+    flex: 1; border-bottom: 1px dotted #444;
+    margin: 0 0.45em; transform: translateY(-3px); min-width: 1.5em;
+}
+.latex-document .latex-toc-page { font-family: 'Latin Modern', Georgia, serif; color: #000; min-width: 1.2em; text-align: right; }
+
+/* Numbered equations (LaTeX \begin{equation}) */
+.latex-document .latex-equation { display: flex; align-items: center; margin: 0.8em 0; text-indent: 0; }
+.latex-document .latex-equation .latex-eq-math { flex: 1; display: flex; justify-content: center; overflow-x: auto; overflow-y: hidden; padding: 4px 0; }
+.latex-document .latex-equation .latex-eq-num {
+    font-family: 'Latin Modern', Georgia, serif; color: #000;
+    padding-left: 0.8em; white-space: nowrap;
+}
+
+/* Footnotes */
+.latex-document .latex-fn-ref { font-size: 0.72em; vertical-align: super; line-height: 0; }
+.latex-document .latex-fn-body { display: none; }
+.latex-document .latex-footnotes {
+    margin-top: 1.4em; padding-top: 0.45em; border-top: 0.8px solid #000;
+    font-size: 0.82em; line-height: 1.35; color: #000; text-indent: 0;
+}
+.latex-document .latex-footnotes .fn-item { margin: 0.12em 0; text-indent: 0; text-align: left; }
+.latex-document .latex-footnotes .fn-num { font-size: 0.8em; vertical-align: super; margin-right: 0.2em; }
+
+/* Figures & images (\includegraphics / figure env) */
+.latex-document .latex-figure { margin: 1em auto; text-align: center; text-indent: 0; break-inside: avoid; }
+.latex-document .latex-img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+.latex-document .latex-img-missing {
+    display: inline-block; border: 1.5px dashed #94a3b8; color: #475569;
+    background: #f8fafc; padding: 1.6em 2.2em; font-size: 0.85em;
+    border-radius: 4px; font-family: Inter, system-ui, sans-serif;
+}
+
+/* Hyperlinks (\href, \url) */
+.latex-document a.latex-link { color: #1a0dab; text-decoration: underline; text-underline-offset: 2px; }
+
+/* Verbatim / code blocks */
+.latex-document .latex-verbatim {
+    font-family: 'Latin Modern Mono', 'Fira Code', Consolas, monospace;
+    font-size: 0.85em; background: #f6f8fa; border: 0.8px solid #d0d7de;
+    border-radius: 4px; padding: 0.7em 1em; margin: 0.8em 0;
+    white-space: pre-wrap; word-break: break-word;
+    text-align: left; text-indent: 0; overflow-x: auto; line-height: 1.4;
+}
+
+/* Lists: paragraph engine wraps item text in <p> — keep it compact */
+.latex-document .latex-itemize li p, .latex-document .latex-enumerate li p { margin: 0 0 0.15em 0; }
+
+/* Quote / center / flush environments */
+.latex-document .latex-quote { margin: 0.8em 2.5em; text-indent: 0; }
+.latex-document .latex-center { text-align: center; text-indent: 0; }
+.latex-document .latex-center p { text-indent: 0; }
+.latex-document .latex-flushleft { text-align: left; text-indent: 0; }
+.latex-document .latex-flushright { text-align: right; text-indent: 0; }
+
+/* Inline decorations */
+.latex-document .latex-sout { text-decoration: line-through; }
+.latex-document .latex-hl { background: #fef08a; padding: 0 2px; border-radius: 1px; }
+.latex-document .latex-hrulefill { display: inline-block; width: 100%; border-top: 0.8px solid #000; height: 0; }
+.latex-document .latex-vspace { width: 100%; }
+
+/* Bibliography (thebibliography) */
+.latex-document .latex-bibitem { margin: 0.3em 0; padding-left: 2em; text-indent: -2em; text-align: left; }
+.latex-document .latex-bibitem-marker { font-weight: 400; margin-right: 0.5em; }

@@ -1,0 +1,55 @@
+/* ============================================================
+   base.css — fonts, global chrome, scrollbars, print guard
+   (Extracted verbatim from the original single-file index.html)
+   ============================================================ */
+
+/* Latin Modern webfonts (real Computer Modern clone used by pdfLaTeX).
+   Self-declared @font-face so we control the family name. */
+@font-face {
+    font-family: 'Latin Modern';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('https://cdn.jsdelivr.net/npm/latex.css@1.14.0/fonts/LM-regular.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Latin Modern';
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+    src: url('https://cdn.jsdelivr.net/npm/latex.css@1.14.0/fonts/LM-italic.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Latin Modern';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('https://cdn.jsdelivr.net/npm/latex.css@1.14.0/fonts/LM-bold.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Latin Modern';
+    font-style: italic;
+    font-weight: 700;
+    font-display: swap;
+    src: url('https://cdn.jsdelivr.net/npm/latex.css@1.14.0/fonts/LM-bold-italic.woff2') format('woff2');
+}
+
+/* Smooth Scrollbars */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.2); border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.4); }
+/* Hide the default arrow buttons (▲▼) Chrome draws on styled scrollbars */
+::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+::-webkit-scrollbar-corner { background: transparent; }
+
+/* Gutter Divider Drag */
+.gutter-divider { cursor: col-resize; transition: background-color 0.2s; }
+.gutter-divider:hover, .gutter-divider.dragging { background-color: #10b981 !important; }
+
+/* Print — hide EVERYTHING on the main page so accidental Ctrl+P
+   produces a blank page, not the app UI. PDF export uses a separate
+   hidden iframe (see exportPDF), not the main window. */
+@media print {
+    html, body { display: none !important; }
+}

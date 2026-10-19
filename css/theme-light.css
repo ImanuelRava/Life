@@ -1,0 +1,86 @@
+/* ============================================================
+   theme-light.css — LIGHT THEME: body.light overrides the dark
+   chrome. The paper pages stay white in both themes (they are
+   the document).
+   (Extracted verbatim from the original single-file index.html)
+   ============================================================ */
+
+body.light { background: #eef2f7; color: #0f172a; }
+body.light .bg-overleaf-header { background-color: #e6ebf2 !important; border-color: #cbd5e1 !important; }
+body.light .bg-slate-900 { background-color: #f1f5f9 !important; }
+body.light .bg-slate-950 { background-color: #e2e8f0 !important; }
+body.light .bg-slate-950\/80 { background-color: rgba(226,232,240,0.85) !important; }
+body.light .bg-slate-800 { background-color: #ffffff !important; }
+body.light .bg-slate-800\/50:hover, body.light .hover\:bg-slate-700:hover { background-color: #e2e8f0 !important; }
+body.light .hover\:bg-slate-800:hover { background-color: #dbe3ec !important; }
+body.light .bg-overleaf-editor { background-color: #ffffff !important; }
+body.light .bg-overleaf-editor-gutter { background-color: #f6f8fb !important; }
+body.light .bg-pdf-bg { background-color: #b9c4d4 !important; }
+body.light .border-slate-800, body.light .border-slate-800\/80, body.light .border-slate-800\/60,
+body.light .border-slate-700\/80, body.light .border-slate-700\/60, body.light .border-slate-700\/40 { border-color: #d3dbe6 !important; }
+body.light .text-slate-100 { color: #0f172a !important; }
+body.light .text-slate-200 { color: #1e293b !important; }
+body.light .text-slate-300 { color: #334155 !important; }
+body.light .text-slate-400 { color: #64748b !important; }
+body.light .text-slate-500 { color: #7b8794 !important; }
+body.light .text-emerald-300 { color: #047857 !important; }
+body.light .bg-emerald-600\/20 { background-color: rgba(5,150,105,0.12) !important; }
+body.light .bg-slate-900\/90 { background-color: #f8fafc !important; }
+body.light .bg-emerald-950\/80 { background-color: rgba(2,44,34,0.06) !important; }
+body.light .text-emerald-200 { color: #065f46 !important; }
+/* CodeMirror light */
+body.light #cm-host { background: #ffffff; color: #1e293b; }
+body.light #cm-host .cm-gutters { background: #f6f8fb; border-right-color: #d3dbe6; }
+body.light #cm-host .cm-activeLineGutter { background: rgba(5,150,105,0.07); color: #334155; }
+body.light #cm-host .cm-activeLine { background: rgba(148,163,184,0.14); }
+body.light #cm-host .cm-selectionBackground, body.light #cm-host .cm-content ::selection { background: rgba(5,150,105,0.18) !important; }
+body.light #cm-host .cm-cursor { border-left-color: #059669; }
+body.light #cm-host .tok-comment { color: #94a3b8; }
+body.light #cm-host .tok-string { color: #b45309; }
+body.light #cm-host .tok-bracket { color: #64748b; }
+body.light #cm-host .tok-tag { color: #be185d; }
+body.light #cm-host .tok-keyword { color: #0369a1; }
+body.light #cm-host .tok-math { color: #047857; }
+/* Components in light mode */
+body.light .ribbon-tool-btn { background: #ffffff; border-color: #dbe3ec; color: #1e293b; }
+body.light .ribbon-tool-btn:hover { background: #eef2f7; border-color: #10b981; color: #0f172a; }
+body.light .ribbon-tool-btn .text-slate-400 { color: #94a3b8 !important; }
+body.light .ribbon-select { background: #ffffff; border-color: #cbd5e1; color: #0f172a; }
+body.light .ribbon-select option { background: #ffffff; color: #0f172a; }
+body.light .ribbon-check { background: #ffffff; border-color: #dbe3ec; color: #334155; }
+body.light .ribbon-form { background: #f8fafc; border-color: #e2e8f0; }
+body.light .ribbon-form-label { color: #64748b; }
+body.light .ribbon-form-btn { background: #ffffff; border-color: #cbd5e1; color: #1e293b; }
+body.light .ribbon-form-btn:hover { background: #eef2f7; border-color: #10b981; color: #0f172a; }
+body.light .ribbon-form-checkrow { color: #334155; }
+body.light .ribbon-tab-btn { color: #64748b; }
+body.light .ribbon-tab-btn:hover { color: #0f172a; }
+body.light .ribbon-tab-btn.active { color: #059669; background-color: rgba(255,255,255,0.9); }
+body.light .ribbon-search-wrap { background: #ffffff; border-color: #cbd5e1; }
+body.light .ribbon-search-wrap input { color: #0f172a; }
+body.light .ribbon-search-wrap input::placeholder { color: #94a3b8; }
+body.light .menu-popover { background: #ffffff; border-color: #dbe3ec; }
+body.light .menu-popover .menu-item { color: #1e293b; }
+body.light .menu-popover .mi-title { color: #0f172a; }
+body.light .menu-popover .mi-desc { color: #7b8794; }
+body.light .sidebar-section-title, body.light .text-\[10px\].uppercase { color: #7b8794; }
+body.light .doc-item.active { background: rgba(5,150,105,0.1); }
+body.light .doc-item.active .doc-name { color: #047857; }
+body.light .doc-name { color: #334155; }
+body.light .outline-item { color: #475569; }
+body.light .outline-item.h1 { color: #0f172a; }
+body.light .outline-item.h3 { color: #64748b; }
+body.light .outline-item.active { color: #047857 !important; }
+body.light #toast-banner { background: #ffffff; color: #1e293b; border-color: #dbe3ec; }
+body.light #find-modal .bg-slate-900 { background-color: #ffffff !important; border-color: #dbe3ec !important; }
+body.light #find-modal input { background: #f8fafc !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
+body.light #help-modal .bg-slate-900 { background-color: #ffffff !important; border-color: #dbe3ec !important; }
+body.light .shortcut-grid .sc-desc { color: #475569; }
+body.light .shortcut-grid kbd { background: #e8edf4; border-color: #cbd5e1; color: #334155; }
+body.light .find-count { color: #7b8794; }
+body.light .modal-label { color: #64748b; }
+body.light .gutter-divider { background-color: #cbd5e1 !important; }
+body.light .gutter-divider:hover { background-color: #10b981 !important; }
+body.light ::-webkit-scrollbar-thumb { background: rgba(71,85,105,0.3); }
+body.light .text-slate-700 { color: #b6c0cd !important; }
+body.light #autosave-badge { color: #475569; }

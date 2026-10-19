@@ -1,0 +1,24 @@
+/* ============================================================
+   sidebar.css — documents list + document outline
+   (Extracted verbatim from the original single-file index.html)
+   ============================================================ */
+
+/* ===== Sidebar ===== */
+.sidebar-section-title {
+    font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em;
+    color: #64748b; font-weight: 600; padding: 0.5rem 0.75rem 0.25rem;
+}
+.doc-item { cursor: pointer; transition: background-color 0.12s; }
+.doc-item:hover { background: rgba(51,65,85,0.5); }
+.doc-item.active { background: rgba(16,185,129,0.12); }
+.doc-item.active .doc-name { color: #34d399; }
+.outline-item {
+    cursor: pointer; padding: 0.25rem 0.75rem; font-size: 0.75rem;
+    color: #cbd5e1; transition: all 0.12s; border-left: 2px solid transparent;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.outline-item:hover { background: rgba(51,65,85,0.5); color: #f1f5f9; }
+.outline-item.h1 { padding-left: 0.75rem; font-weight: 600; color: #e2e8f0; }
+.outline-item.h2 { padding-left: 1.5rem; }
+.outline-item.h3 { padding-left: 2.25rem; color: #94a3b8; }
+.outline-item.active { border-left-color: #10b981; color: #34d399 !important; background: rgba(16,185,129,0.08); }

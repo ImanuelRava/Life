@@ -1,0 +1,32 @@
+/* ============================================================
+   editor.css — CodeMirror 6 host styling (dark chrome)
+   (Extracted verbatim from the original single-file index.html)
+   ============================================================ */
+
+/* ===== CodeMirror host ===== */
+#cm-host { height: 100%; width: 100%; font-size: 13px; }
+#cm-host .cm-editor { height: 100%; }
+#cm-host .cm-scroller { font-family: "Fira Code", Consolas, Courier New, monospace; }
+#cm-host .cm-gutters { background: #0b0f19; border-right: 1px solid rgba(51,65,85,0.6); }
+#cm-host .cm-content { caret-color: #10b981; }
+#cm-host .cm-activeLineGutter { background: rgba(16,185,129,0.08); color: #e2e8f0; }
+#cm-host .cm-activeLine { background: rgba(30,41,59,0.4); }
+#cm-host .cm-selectionBackground, #cm-host .cm-content ::selection { background: rgba(16,185,129,0.25) !important; }
+#cm-host .tok-comment { color: #64748b; font-style: italic; }
+#cm-host .tok-string  { color: #fbbf24; }
+#cm-host .tok-bracket { color: #94a3b8; }
+#cm-host .tok-tag     { color: #f472b6; }
+#cm-host .tok-keyword { color: #38bdf8; }
+#cm-host .tok-math    { color: #34d399; }
+#cm-host .cm-cursor { border-left-color: #10b981; }
+
+/* ---- Addition (not in the original file): textarea fallback used when the
+   CodeMirror CDN is unreachable, so the studio keeps working offline ---- */
+.cm-fallback {
+    width: 100%; height: 100%; resize: none; border: none; outline: none;
+    background: transparent; color: #e2e8f0;
+    font-family: "Fira Code", Consolas, "Courier New", monospace;
+    font-size: 13px; line-height: 1.6; padding: 12px; box-sizing: border-box;
+    caret-color: #10b981;
+}
+body.light .cm-fallback { color: #1e293b; caret-color: #059669; }
